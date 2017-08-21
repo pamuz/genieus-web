@@ -1,0 +1,37 @@
+{
+  "name": "genieus-web",
+  "version": "0.0.1",
+  "description": "The SPA application that serves Genieus to webbrowser users.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "@curi/react": "^1.0.0-beta.5",
+    "curi": "^1.0.0-beta.2",
+    "hickory": "^0.6.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "webpack": "^3.5.5"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "redux-logger": "^3.0.6",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "node_modules/webpack/bin/webpack.js --progress --colors",
+    "dev": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --hot --inline",
+    "bundle-production": "node_modules/webpack/bin/webpack.js -p"
+  },
+  "author": "",
+  "license": "SEE LICENSE IN license"
+}
