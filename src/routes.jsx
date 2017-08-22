@@ -9,6 +9,7 @@
 
 import Home from './components/page/Home.jsx';
 import Login from './components/page/Login.jsx';
+import Quiz from './components/page/Quiz.jsx';
 
 const routes = [
   {
@@ -20,7 +21,12 @@ const routes = [
     name: 'Login',
     path: 'login',
     body: () => Login
-  }
+  },
+  {
+    name: 'Quiz',
+    path: 'quiz',
+    body: () => Quiz
+  },
 ];
 
 export {

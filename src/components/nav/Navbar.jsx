@@ -26,6 +26,9 @@ export class _Navbar extends React.Component {
           ? <a href="#" onClick={ this.handleLogout.bind(this) }>Logout</a>
           : <Link to="Login">Login</Link> }
         { isLoggedIn
+          ? <Link to="Quiz">Take quiz</Link>
+          : null }
+        { isLoggedIn
           ? <a href="#">({ name }) My account</a>
           : null }
       </div>
