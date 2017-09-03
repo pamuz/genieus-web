@@ -69,3 +69,12 @@ npm run dev
 This will kick webpack in "watch" mode, so that every time you modify
 a file it does it's thing and refereshes the browser. You will be able
 to find the app by going to `localhost:8080`
+
+# Terminology
+
+When talking about JSX components, we refer to a "Page" component when
+talking about a Component that is meant to be a page of the web
+application i.e. it will be displayed when a specific url is
+visited. A `property` component is a component that is meant to be
+reused by other components and that will only receive data through its
+properties.

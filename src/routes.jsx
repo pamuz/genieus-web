@@ -3,13 +3,16 @@
  * of which contains properties that describe a route. For each
  * of the objects in the routes array the `body` property is of
  * particular importance, it is a function that returns the class
- * of a React.Component, whenver the SPA is in the route indicated
- * by the `path` property that component will be rendered.
+ * of a React.Component, the component returned by that function
+ * will be the one rendered when the browser is on that route.
  */
 
 import Home from './components/page/Home.jsx';
 import Login from './components/page/Login.jsx';
 import Quiz from './components/page/Quiz.jsx';
+
+import { store, getJSONWebToken } from './store/index.js';
+import { initiateQuiz } from './store/actions/quiz.js';
 
 const routes = [
   {
@@ -25,7 +28,10 @@ const routes = [
   {
     name: 'Quiz',
     path: 'quiz',
-    body: () => Quiz
+    body: () => Quiz,
+    load: (params, modifiers) => {
+      return store.dispatch(initiateQuiz(getJSONWebToken()));
+    }
   },
 ];
 

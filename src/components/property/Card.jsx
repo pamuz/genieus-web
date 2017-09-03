@@ -9,7 +9,7 @@ import React from 'react';
 const PROMPT_SIDE = 'PROMPT_SIDE';
 const ANSWER_SIDE = 'ANSWER_SIDE';
 
-export class _Quiz extends React.Component {
+export class _Card extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,8 +29,8 @@ export class _Quiz extends React.Component {
 
   getContentForSideBeingDisplayed() {
     if (this.state.sideBeingDisplayed === PROMPT_SIDE)
-      return this.props.promptContent;
-    return this.props.answerContent;
+      return this.props.flashcardData.attributes.front.text;
+    return this.props.flashcardData.attributes.back.text;
   }
 
   flip() {
@@ -42,4 +42,4 @@ export class _Quiz extends React.Component {
 
 }
 
-export default _Quiz;
+export default _Card;

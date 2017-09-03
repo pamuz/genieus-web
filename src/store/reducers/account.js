@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import { INITIAL_STATE } from '../constants.js';
 import {
   LOGIN_INITIATED,
@@ -7,7 +6,7 @@ import {
   LOGOUT
 } from '../actions/account.js';
 
-function account(state=INITIAL_STATE.account, action) {
+export default function account(state=INITIAL_STATE.account, action) {
   switch(action.type) {
     case LOGIN_INITIATED:
       return Object.assign({}, state, {
@@ -46,9 +45,3 @@ function account(state=INITIAL_STATE.account, action) {
       return state;
   }
 }
-
-const rootReducer = combineReducers({
-  account,
-});
-
-export default rootReducer;

@@ -32,10 +32,12 @@ export function attemptLogin(email, password) {
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({
-        'type': 'account',
         'data': {
-          email,
-          password
+          'type': 'account',
+          'attributes': {
+            email,
+            password
+          }
         }
       })
     }).done((response, status, xhr) => {
