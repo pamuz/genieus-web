@@ -40,26 +40,19 @@ subdirectories depending on the role the play in the app:
 The Genieus web application is only the facade of the whole
 system. Ultimately, users actions are sent to a server where they are
 processed, in turn, the server sends responses that the application
-uses to show a change in the UI. The server is currently distributed
-as a docker image. All you need to do to get is running is to have docker
-installed, and run
+uses to show a change in the UI. The server stack is composed of
+multiple applications which are dockerized. You will need to clone the
+`genieus-api` repo (or at least download or copy it's
+docker-compose.yml file) and then, in the directory of the file run:
 
 ```
-docker pull pmunoz/genieus-api
-```
-
-This initial command merely downloads the image to your computer. Next
-you need to actually put that image to use, for which you need the
-command
-
-```
-docker run -d -p 5000:5000
+docker-compose up
 ```
 
 Provided that you don't have any other applications running on port
-5000, everything should work. You might be interested in looking up
-additional docker concepts like how to list running containers or kill
-them.
+5000 and 5432, everything should work. You might be interested in
+looking up additional docker concepts like how to list running
+containers or kill them.
 
 # The app development commands
 
@@ -76,3 +69,12 @@ npm run dev
 This will kick webpack in "watch" mode, so that every time you modify
 a file it does it's thing and refereshes the browser. You will be able
 to find the app by going to `localhost:8080`
+
+# Terminology
+
+When talking about JSX components, we refer to a "Page" component when
+talking about a Component that is meant to be a page of the web
+application i.e. it will be displayed when a specific url is
+visited. A `property` component is a component that is meant to be
+reused by other components and that will only receive data through its
+properties.

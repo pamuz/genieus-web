@@ -8,6 +8,14 @@ const INITIAL_STATE = {
       // name: ...,
       // jwt: ...,
     },
+  },
+  quiz: {
+    flashcards: [],
+    currentFlashcardIndex: -1,
+    isLoading: false,
+    isReady: false,
+    isInError: false,
+    isFinished: false
   }
 };
 

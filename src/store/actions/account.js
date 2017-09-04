@@ -9,13 +9,10 @@ function loginInitiated() {
   };
 }
 
-function loginSuccess(email, name, jwt) {
-  return {
-    type: LOGIN_SUCCESS,
-    email,
-    name,
-    jwt
-  };
+function loginSuccess(userObj) {
+  return Object.assign({}, {
+    type: LOGIN_SUCCESS
+  }, userObj.data);
 }
 
 function loginFailure(reasons) {
@@ -31,15 +28,20 @@ export function attemptLogin(email, password) {
       type: LOGIN_INITIATED
     });
 
-    $.ajax('http://localhost:5000/api/v0/authenticate', {
+    $.ajax('http://localhost:5000/api/v0/account/authenticate', {
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({
-        email,
-        password
+        'data': {
+          'type': 'account',
+          'attributes': {
+            email,
+            password
+          }
+        }
       })
-    }).done((data, status, xhr) => {
-      dispatch(loginSuccess(data.email, data.name, data.jwt));
+    }).done((response, status, xhr) => {
+      dispatch(loginSuccess(response));
     }).fail((xhr, status, error) => {
       dispatch(loginFailure(error.message));
     });
