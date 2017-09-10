@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { attemptRegistration } from '../../../store/actions/account.js';
+import { connect } from 'react-redux';
+
+import { attemptRegistration } from '../../store/actions/account.js';
 
 class _Registration extends React.Component {
     constructor(props) {

@@ -6,7 +6,7 @@ import {
   LOGOUT,
   REGISTRATION_FAILURE,
   REGISTRATION_INITIATED,
-  REGISTRATION_FAILURE
+  REGISTRATION_SUCCESS
 } from '../actions/account.js';
 
 export default function account(state=INITIAL_STATE.account, action) {
