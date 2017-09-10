@@ -20,18 +20,20 @@ export class _Navbar extends React.Component {
     const { isLoggedIn, onLogout, name } = this.props;
 
     return (
-      <div>
-        <Link to="Home">Home</Link>
-        { isLoggedIn
-          ? <a href="#" onClick={ this.handleLogout.bind(this) }>Logout</a>
-          : <Link to="Login">Login</Link> }
-        { isLoggedIn
-          ? <Link to="Quiz">Take quiz</Link>
-          : null }
-        { isLoggedIn
-          ? <a href="#">({ name }) My account</a>
-          : null }
-      </div>
+      <nav className="navbar navbar-expand-sm navbar-light">
+        <nav className="navbar-nav">
+          <Link className="nav-link active" to="Home">Home</Link>
+          {isLoggedIn
+            ? <a href="#" onClick={this.handleLogout.bind(this)}>Logout</a>
+            : <Link className="nav-link" to="Login">Login</Link>}
+          {isLoggedIn
+            ? <Link className="nav-link" to="Quiz">Take quiz</Link>
+            : null}
+          {isLoggedIn
+            ? <a href="#">({name}) My account</a>
+            : null}
+        </nav> 
+      </nav>
     );
   }
 
@@ -40,6 +42,12 @@ export class _Navbar extends React.Component {
     e.preventDefault();
     onLogout();
   }
+}
+
+/* Styles */
+
+const navBarStyle = {
+
 }
 
 const mapStateToProps = state => {
