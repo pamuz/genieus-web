@@ -5,11 +5,15 @@
  * particular importance, it is a function that returns the class
  * of a React.Component, the component returned by that function
  * will be the one rendered when the browser is on that route.
+ * 
+ * For more information of what the elements do visit the 
+ * curi documentation.
  */
 
 import Home from './components/page/Home.jsx';
 import Login from './components/page/Login.jsx';
 import Quiz from './components/page/Quiz.jsx';
+import Registration from './components/page/Registration.jsx';
 
 import { store, getJSONWebToken } from './store/index.js';
 import { initiateQuiz } from './store/actions/quiz.js';
@@ -33,6 +37,11 @@ const routes = [
       return store.dispatch(initiateQuiz(getJSONWebToken()));
     }
   },
+  {
+    name: 'Registration',
+    path: 'registration',
+    body: () => Registration,
+  }
 ];
 
 export {

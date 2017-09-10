@@ -3,7 +3,10 @@ import {
   LOGIN_INITIATED,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
-  LOGOUT
+  LOGOUT,
+  REGISTRATION_FAILURE,
+  REGISTRATION_INITIATED,
+  REGISTRATION_SUCCESS
 } from '../actions/account.js';
 
 export default function account(state=INITIAL_STATE.account, action) {
@@ -41,6 +44,20 @@ export default function account(state=INITIAL_STATE.account, action) {
         data: {},
       });
       break;
+    case REGISTRATION_INITIATED:
+      return Object.assign({}, state, {
+        isRegistering: true,
+      });
+      break;
+    case REGISTRATION_SUCCESS:
+      return Object.assign({}, state, {
+        isRegistering: false,
+      });
+    case REGISTRATION_FAILURE:
+      return Object.assign({}, state, {
+        isRegistering: false,
+        isInRegistrationFailure: true
+      });
     default:
       return state;
   }

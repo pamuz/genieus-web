@@ -1,8 +1,10 @@
 const INITIAL_STATE = {
   account: {
     isAuthenticating: false,
-    isLogedIn: false,
-    isInError: false,
+    isRegistering: false,
+    isInRegisteringError: false,
+    isLoggedIn: false,
+    isInAuthenticateError: false,
     data: {
       // email: ...,
       // name: ...,
