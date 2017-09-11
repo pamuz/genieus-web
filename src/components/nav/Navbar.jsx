@@ -26,7 +26,7 @@ export class _Navbar extends React.Component {
           ? <a href="#" onClick={ this.handleLogout.bind(this) }>Logout</a>
           : <Link to="Login">Login</Link> }
         { isLoggedIn
-          ? <Link to="Quiz">Take quiz</Link>
+          ? this.renderLoggedInOnlyLinks()
           : null }
         { isLoggedIn
           ? <a href="#">({ name }) My account</a>
@@ -39,6 +39,15 @@ export class _Navbar extends React.Component {
     const { onLogout } = this.props;
     e.preventDefault();
     onLogout();
+  }
+
+  renderLoggedInOnlyLinks() {
+    return (
+      <span>
+        <Link to="Quiz">Take quiz</Link>
+        <Link to="Collection">Collection</Link>
+      </span>
+    );
   }
 }
 
