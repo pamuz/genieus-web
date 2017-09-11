@@ -15,6 +15,7 @@ We use:
 - Curi for routing
 - jQuery for Ajax and other stuff
 - Redux as the store
+- Bootstrap as the styling framework
 
 # What you need to start developing
 
@@ -32,7 +33,7 @@ subdirectories depending on the role the play in the app:
 
 - The `nav` components deal with taking the user from one section of the app
   to another.
-- The components in `page` are components that are mant to be a page displayed
+- The components in `page` are components that are meant to be a page displayed
   at a specific route.
 
 # The server
@@ -78,3 +79,16 @@ application i.e. it will be displayed when a specific url is
 visited. A `property` component is a component that is meant to be
 reused by other components and that will only receive data through its
 properties.
+
+# Styles
+
+For styling the components and any other DOM element we are using Bootstrap
+4 framework. The CDN where the classes come from can be find in the index.html
+file in the public folder. 
+
+Some best practices we're following are the next:
+- The use a new line for each DOM element's attribute
+- The attributes go in alphabetic order for a quicker search
+- The styles are define inline if they're specific to the component
+- The styles of the component are defined right beneath the component definition.
+- The styles names have the name of the component in the variable name. 

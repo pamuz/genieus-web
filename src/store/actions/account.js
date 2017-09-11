@@ -58,19 +58,19 @@ export function logout() {
   };
 }
 
-function registerInitiated() {
+function registrationInitiated() {
   return {
     type: REGISTRATION_INITIATED
   };
 }
 
-function registerSucces(response) {
+function registrationSuccess(response) {
   return {
     type: REGISTRATION_SUCCESS
   };
 } 
 
-function registerFailure(error) {
+function registrationFailure(error) {
   return Object.assign({},{
     type: REGISTRATION_FAILURE
   }, error);
@@ -78,7 +78,7 @@ function registerFailure(error) {
 
 export function attemptRegistration(email, password, passwordConf) {
   return dispatch => {
-    dispatch(loginInitiated());
+    dispatch(registrationInitiated());
     
     $.ajax('http://localhost:5000/api/v0/account', {
       method: 'POST',
