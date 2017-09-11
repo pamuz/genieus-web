@@ -20,7 +20,7 @@ export class _Navbar extends React.Component {
     const { isLoggedIn, onLogout, name } = this.props;
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-light ">
+      <nav className="navbar navbar-expand-sm navbar-light container ">
         <Link className="navbar-brand" to="Home">Genieus</Link>
         <nav className="navbar-nav ml-auto">
           {isLoggedIn
