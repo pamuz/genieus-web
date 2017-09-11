@@ -10,31 +10,51 @@
  * curi documentation.
  */
 
-import Home from './components/page/Home.jsx';
-import Login from './components/page/Login.jsx';
-import Quiz from './components/page/Quiz.jsx';
+import Home from "./components/page/Home.jsx";
+import Login from "./components/page/Login.jsx";
+import Quiz from "./components/page/Quiz.jsx";
+import Collection from "./components/page/Collection.jsx";
+import Deck from "./components/page/Deck.jsx";
 import Registration from './components/page/Registration.jsx';
 
-import { store, getJSONWebToken } from './store/index.js';
-import { initiateQuiz } from './store/actions/quiz.js';
+import { store, getJSONWebToken } from "./store/index.js";
+import { initiateQuiz } from "./store/actions/quiz.js";
+import { getAllDecksAttempt } from "./store/actions/collection.js";
+import { getDeckDetailAttempt, } from "./store/actions/deck-detail.js";
 
 const routes = [
   {
-    name: 'Home',
-    path: '', // matches /
+    name: "Home",
+    path: "", // matches /
     body: () => Home
   },
   {
-    name: 'Login',
-    path: 'login',
+    name: "Login",
+    path: "login",
     body: () => Login
   },
   {
-    name: 'Quiz',
-    path: 'quiz',
+    name: "Quiz",
+    path: "quiz",
     body: () => Quiz,
     load: (params, modifiers) => {
       return store.dispatch(initiateQuiz(getJSONWebToken()));
+    }
+  },
+  {
+    name: "Collection",
+    path: "collection",
+    body: () => Collection,
+    load: (params, modifiers) => {
+      return store.dispatch(getAllDecksAttempt(getJSONWebToken()));
+    }
+  },
+  {
+    name: "Deck",
+    path: "deck/:deckId",
+    body: () => Deck,
+    load: (params, modifiers) => {
+      return store.dispatch(getDeckDetailAttempt(getJSONWebToken(), params.deckId));
     }
   },
   {

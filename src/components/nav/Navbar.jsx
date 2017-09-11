@@ -24,13 +24,12 @@ export class _Navbar extends React.Component {
         <Link className="navbar-brand" to="Home">Genieus</Link>
         <nav className="navbar-nav ml-auto">
           {isLoggedIn
-            ? <a href="#" onClick={this.handleLogout.bind(this)}>Logout</a>
+            ? <a className="nav-link" href="#" onClick={this.handleLogout.bind(this)}>Logout</a>
             : <Link className="nav-link" to="Login">Log In</Link>}
+          { this.renderTakeQuizLink()}
+          { this.renderCollectionLink()}
           {isLoggedIn
-            ? <Link className="nav-link" to="Quiz">Take quiz</Link>
-            : null}
-          {isLoggedIn
-            ? <a href="#">({name}) My account</a>
+            ? <a className="nav-link" href="#">({name}) My account</a>
             : null}
           <Link className="nav-link" to="Registration">Sign Up</Link>
         </nav> 
@@ -42,6 +41,24 @@ export class _Navbar extends React.Component {
     const { onLogout } = this.props;
     e.preventDefault();
     onLogout();
+  }
+
+  renderTakeQuizLink() {
+    if (this.props.isLoggedIn) {
+      return (
+        <Link className="nav-link" to="Quiz">Take quiz</Link>
+      );
+    }
+    return null;
+  }
+
+  renderCollectionLink() {
+    if (this.props.isLoggedIn) {
+      return (
+        <Link className="nav-link" to="Collection">Collection</Link>
+      );
+    }
+    return null;
   }
 }
 

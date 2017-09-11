@@ -18,6 +18,19 @@ const INITIAL_STATE = {
     isReady: false,
     isInError: false,
     isFinished: false
+  },
+  collection: {
+    decks: [],
+    isFetching: false,
+    isInError: false,
+    error: {}
+  },
+  deckDetail: {
+    deck: {},
+    flashcards: [],
+    isFetching: false,
+    isInError: false,
+    error: {}
   }
 };
 

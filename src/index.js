@@ -38,7 +38,7 @@ ReactDOM.render((
             );
           }
           return response.body
-               ? (<div><Navbar /><response.body /></div>)
+               ? (<div className="container"><Navbar /><response.body /></div>)
                : <p>404</p>;
       }}>
     </Navigator>
