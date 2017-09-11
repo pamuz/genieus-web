@@ -50,7 +50,7 @@ export class _Collection extends React.Component {
             return (
               <div className="card" style={{ "width": "20rem" }}>
                 <div className="card-body">
-                  <h4 className="card-title">{ deck.attributes.name }</h4>
+                  <h4 className="card-title" style={{ color: deck.attributes.color }}>{ deck.attributes.name }</h4>
                   <Link className="btn btn-primary"
                         to="Deck"
                         params={{ deckId: deck.id }}>Detail</Link>

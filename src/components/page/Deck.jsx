@@ -39,7 +39,7 @@ export class _Deck extends React.Component {
 
     return (
       <div>
-        <h1>{ deck.attributes.name }</h1>
+        <h1 style={{ color: deck.attributes.color }}>{ deck.attributes.name }</h1>
 
         <div className="card">
           <div className="card-body" style={{ padding: 10 }}>
