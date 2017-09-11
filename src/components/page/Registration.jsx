@@ -10,30 +10,65 @@ class _Registration extends React.Component {
     }
 
     render() {
-        const { handleRegistrationBtnClick } = this.props;
+        const { handleRegistrationBtnClick, isRegistering, isInRegisteringError } = this.props;
 
         return (
-            <div>
-                <label>Email</label>
-                <input ref={ (input) => this.emailInput = input } type="text"/>
-                <label>Contraseña</label>
-                <input ref={ (input) => this.passwordInput = input } type="text" type="password"/>
-                <label>Confirmar Contraseña</label>
-                <input ref={ (input) => this.confirmPassInput = input } type="text" type="password"/>
-                <button onClick = { 
-                    handleRegistrationBtnClick(this.emailInput.value,
-                                               this.passwordInput.value, 
-                                               this.confirmPassInput.vale) }
-                >Register</button>
+            <div className="container">
+                <h4 className="mt-3">Sign Up</h4>
+                <div className="row justify-content-center">
+                    <form className="col-sm-6"
+                          style={registrationFormStyle}>
+                        <div className="form-group mt-3">
+                            <label htmlFor="emailInput">Email</label>
+                            <input className="form-control"
+                                   id="emailInput"
+                                   placeholder="@itesm.mx"
+                                   ref={ (input) => this.emailInput = input } 
+                                   type="text"/>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="passwordInput">
+                                Password
+                            </label>
+                            <input className="form-control"
+                                   id="passwordInput"
+                                   ref={ (input) => this.passwordInput = input } 
+                                   type="text"/>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="confirmPassInput">
+                                Confirm Password
+                            </label>
+                            <input className="form-control"
+                                   id="confirmPassInput"
+                                   ref={ (input) => this.confirmPassInput = input } 
+                                   type="text"/>
+                            <div className="invalid-feedback">
+                                The passwords don't match
+                            </div>
+                        </div>
+                        <button className="btn btn-primary mb-3"
+                                onClick = {this.onRegisterClick.bind(this)}>
+                            Sign Up
+                        </button>
+                    </form>
+                </div>
             </div>
         );
     }
 
     onRegisterClick() {
-        console.log("Email: " + this.emailInput.value);
-        console.log("Contraseña: " + this.passwordInput.value);
-        console.log("Confirmar: " + this.confirmPassInput.value);
-    } 
+        const { handleRegistrationBtnClick } = this.props;
+    
+        handleRegistrationBtnClick(this.emailInput.value, 
+                                   this.passwordInput.value,
+                                   this.confirmPassInput.value);
+    }
+}
+
+const registrationFormStyle = { // This might be a global class
+    border: '2px solid #ededed',
+    borderRadius: '10px'
 }
 
 function mapStateToProps(state){
