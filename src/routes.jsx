@@ -40,7 +40,7 @@ const routes = [
   {
     name: 'Registration',
     path: 'registration',
-    body: () => Registration,
+    body: () => Registration
   }
 ];
 

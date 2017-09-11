@@ -18,24 +18,42 @@ export class _Login extends React.Component {
     const { isAuthenticating, isInError } = this.props;
 
     return (
-      <div>
-        <div action="">
-          <label htmlFor="">Email</label>
-          <input ref={ (input) => this.emailInput = input } type="text" />
-          <label htmlFor="">Password</label>
-          <input ref={ (input) => this.passwordInput = input } type="password" />
-          <button onClick={ this.handleSignInBtnClick.bind(this) }>Sign in</button>
+      <div className="container">
+        <div className="row justify-content-center">
+          <form className="col-sm-6"
+                style={logInFormStyle}>
+            <div className="form-group mt-3">
+              <label htmlFor="emailInput">Email</label>
+              <input className="form-control"
+                id="emailInput"
+                placeholder="@itesm.mx"
+                ref={(input) => this.emailInput = input}
+                type="text"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="passwordInput">Password</label>
+              <input className="form-control"
+                id="passwordInput"
+                placeholder="Password"
+                ref={(input) => this.passwordInput = input}
+                type="password" id="passwordInput" />
+            </div>
+            <button className="btn btn-primary mb-3"
+              type="submit"
+              onClick={this.handleSignInBtnClick.bind(this)}>
+              Sign in
+            </button>
+            {isAuthenticating
+              ? <div>Logging in...</div>
+              : null
+            }
+            {isInError
+              ? <div>The username or password provided do not exist</div>
+              : null
+            }
+          </form>
         </div>
-
-        { isAuthenticating
-          ? <div>Logging in...</div>
-          : null
-        }
-
-        { isInError
-          ? <div>The username or password provided do not exist</div>
-          : null
-        }
       </div>
     );
   }
@@ -48,6 +66,14 @@ export class _Login extends React.Component {
   }
 }
 
+/* Styles */
+const logInFormStyle = {
+  marginTop: '100px',
+  border: '2px solid #ededed',
+  borderRadius: '10px'
+}
+
+/* Functions */
 const mapStateToProps = state => {
   return {
     isAuthenticating: state.account.isAuthenticating,
