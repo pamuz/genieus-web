@@ -57,9 +57,9 @@ class _Registration extends React.Component {
         );
     }
 
-    onRegisterClick() {
+    onRegisterClick(e) {
         const { handleRegistrationBtnClick } = this.props;
-    
+        e.preventDefault();
         handleRegistrationBtnClick(this.emailInput.value, 
                                    this.passwordInput.value,
                                    this.confirmPassInput.value);
