@@ -18,7 +18,8 @@ export class _Login extends React.Component {
     const { isAuthenticating, isInError } = this.props;
 
     return (
-      <div className="container">
+      <div className="container">  
+        <h4 className="mt-3">Log In</h4>
         <div className="row justify-content-center">
           <form className="col-sm-6"
                 style={logInFormStyle}>
@@ -67,8 +68,7 @@ export class _Login extends React.Component {
 }
 
 /* Styles */
-const logInFormStyle = {
-  marginTop: '100px',
+const logInFormStyle = { // This might be a global class
   border: '2px solid #ededed',
   borderRadius: '10px'
 }
