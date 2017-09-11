@@ -55,7 +55,9 @@ const routes = [
     body: () => Deck,
     load: (params, modifiers) => {
       return store.dispatch(getDeckDetailAttempt(getJSONWebToken(), params.deckId));
-    },
+    }
+  },
+  {
     name: 'Registration',
     path: 'registration',
     body: () => Registration

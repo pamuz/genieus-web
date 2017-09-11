@@ -60,8 +60,7 @@ export class _Login extends React.Component {
   }
 
   handleSignInBtnClick(e) {
-    
-    console.log("handlesignbtnclick");
+    e.preventDefault();
     const { onSignInBtnClick } = this.props;
     onSignInBtnClick(this.emailInput.value, this.passwordInput.value);
     this.emailInput.value = "";
