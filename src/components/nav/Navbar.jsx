@@ -20,18 +20,19 @@ export class _Navbar extends React.Component {
     const { isLoggedIn, onLogout, name } = this.props;
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-light">
-        <nav className="navbar-nav">
-          <Link className="nav-link active" to="Home">Home</Link>
+      <nav className="navbar navbar-expand-sm navbar-light ">
+        <Link className="navbar-brand" to="Home">Genieus</Link>
+        <nav className="navbar-nav ml-auto">
           {isLoggedIn
             ? <a href="#" onClick={this.handleLogout.bind(this)}>Logout</a>
-            : <Link className="nav-link" to="Login">Login</Link>}
+            : <Link className="nav-link" to="Login">Log In</Link>}
           {isLoggedIn
             ? <Link className="nav-link" to="Quiz">Take quiz</Link>
             : null}
           {isLoggedIn
             ? <a href="#">({name}) My account</a>
             : null}
+          <Link className="nav-link" to="Registration">Sign Up</Link>
         </nav> 
       </nav>
     );
