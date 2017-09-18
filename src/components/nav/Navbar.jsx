@@ -65,7 +65,7 @@ export class _Navbar extends React.Component {
 /* Styles */
 
 const navBarStyle = {
-
+  color: 'white'
 }
 
 const mapStateToProps = state => {

@@ -38,11 +38,25 @@ export class _Collection extends React.Component {
         <h1>Deck collection</h1>
 
         <form onSubmit={ this.deckCreateFormSubmit.bind(this) } action="">
-          <label>Name</label>
-          <input type="text" ref={ input => this.deckNameInput = input }/>
-          <label>Color</label>
-          <input type="text" ref={ select => this.deckColorSelect = select }/>
-          <input name="" type="submit" value="Save"/>
+          <div className="form-group">
+            <label className="mr-2"
+                   htmlFor="deckNameInput">Name </label>
+            <input id="deckNameInput"
+                   ref={input => this.deckNameInput = input}
+                   type="text" />
+          </div>
+          <div className="form-group">
+            <label className="mr-3"
+                   htmlFor="deckColorSelect">Color </label>
+            <input id="deckColorSelect"
+                   ref={select => this.deckColorSelect = select}
+                   type="text" />
+          </div>
+          <input id="deckColorSelect"
+                 className="btn btn-primary" 
+                 name="" 
+                 type="submit" 
+                 value="Save"/>
         </form>
 
         {
