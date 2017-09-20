@@ -16,7 +16,7 @@ function loginInitiated() {
 function loginSuccess(userObj) {
   return Object.assign({}, {
     type: LOGIN_SUCCESS
-  }, userObj.data);
+  }, userObj.data.attributes);
 }
 
 function loginFailure(reasons) {
@@ -89,7 +89,7 @@ export function attemptRegistration(email, password, passwordConf) {
           'attributes': {
             email,
             password,
-            passwordConf
+            passwordConfirmation: passwordConf
           }
         }
       })

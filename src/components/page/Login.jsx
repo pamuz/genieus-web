@@ -22,7 +22,6 @@ export class _Login extends React.Component {
         <h4 className="mt-3">Log In</h4>
         <div className="row justify-content-center">
           <form className="col-sm-6"
-            onSubmit={ this.handleSignInBtnClick.bind(this) }
                 style={logInFormStyle}>
             <div className="form-group mt-3">
               <label htmlFor="emailInput">Email</label>
@@ -42,6 +41,7 @@ export class _Login extends React.Component {
                 type="password" id="passwordInput" />
             </div>
             <button className="btn btn-primary mb-3"
+              onClick={ this.handleSignInBtnClick.bind(this) }
               type="submit">
               Sign in!
             </button>
@@ -61,6 +61,8 @@ export class _Login extends React.Component {
 
   handleSignInBtnClick(e) {
     e.preventDefault();
+    { console.log("email: " + this.emailInput.value +
+                  "password: "+ this.passwordInput.value )}
     const { onSignInBtnClick } = this.props;
     onSignInBtnClick(this.emailInput.value, this.passwordInput.value);
     this.emailInput.value = "";
