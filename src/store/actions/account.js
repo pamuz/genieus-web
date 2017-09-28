@@ -19,6 +19,12 @@ function loginSuccess(userObj) {
   }, userObj.data.attributes);
 }
 
+function loginSuccessNA(){
+  return {
+    type: LOGIN_SUCCESS
+  };
+}
+
 function loginFailure(reasons) {
   return Object.assign({},{
     type: LOGIN_FAILURE},
@@ -26,11 +32,15 @@ function loginFailure(reasons) {
   );
 }
 
+function loginFailureNA() {
+  return {
+    type: LOGIN_FAILURE
+  };
+}
+
 export function attemptLogin(email, password) {
   return dispatch => {
-    dispatch({
-      type: LOGIN_INITIATED
-    });
+    dispatch(loginInitiated());
 
     $.ajax('http://localhost:5000/api/v0/account/authenticate', {
       method: 'POST',
@@ -52,6 +62,18 @@ export function attemptLogin(email, password) {
   };
 }
 
+export function attemptLoginNA(email, password){
+  return dispatch => {
+    dispatch(loginInitiated());
+    console.log(typeof(email) + " : " + typeof(password))
+    if(email === "success" && password === "success"){
+      console.log("WHAT?")
+      dispatch(loginSuccessNA());
+    }else{
+      dispatch(loginFailureNA());
+    }
+  }
+}
 export function logout() {
   return {
     type: LOGOUT

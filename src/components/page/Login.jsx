@@ -7,7 +7,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import { attemptLogin } from '../../store/actions/account.js';
+import { attemptLoginNA } from '../../store/actions/account.js';
 
 export class _Login extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ export class _Login extends React.Component {
 
     return (
       <div className="container">  
-        <h4 className="mt-3">Log In</h4>
         <div className="row justify-content-center">
           <form className="col-sm-6"
                 style={logInFormStyle}>
@@ -88,7 +87,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onSignInBtnClick: (name, password) => {
-      dispatch(attemptLogin(name, password));
+      dispatch(attemptLoginNA(name, password));
     }
   }
 }

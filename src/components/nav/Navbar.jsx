@@ -20,18 +20,26 @@ export class _Navbar extends React.Component {
     const { isLoggedIn, onLogout, name } = this.props;
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-light container ">
+      <nav className="navbar navbar-expand-sm navbar-light container">
         <Link className="navbar-brand" to="Home">Genieus</Link>
         <nav className="navbar-nav ml-auto">
           {isLoggedIn
             ? <a className="nav-link" href="#" onClick={this.handleLogout.bind(this)}>Logout</a>
-            : <Link className="nav-link" to="Login">Log In</Link>}
+            : <Link className="nav-link btn btn-primary" 
+                    style={ loginBtnStyle }
+                    to="Login">
+                    Log In
+            </Link>}
           { this.renderTakeQuizLink()}
           { this.renderCollectionLink()}
           {isLoggedIn
             ? <a className="nav-link" href="#">({name}) My account</a>
             : null}
-          <Link className="nav-link" to="Registration">Sign Up</Link>
+          <Link className="nav-link btn" 
+                style={ signinBtnStyle }
+                to="Registration">
+                Sign Up
+          </Link>
         </nav> 
       </nav>
     );
@@ -64,8 +72,12 @@ export class _Navbar extends React.Component {
 
 /* Styles */
 
-const navBarStyle = {
+const loginBtnStyle = {
   color: 'white'
+}
+
+const signinBtnStyle = {
+  color: '#007bff'
 }
 
 const mapStateToProps = state => {
