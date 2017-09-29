@@ -1,23 +1,15 @@
 const INITIAL_STATE = {
   account: {
     isAuthenticating: false,
-    isRegistering: false,
     isInRegisteringError: false,
-    isLoggedIn: false,
     isInAuthenticateError: false,
+    isLoggedIn: false,
+    isRegistering: false,
     data: {
       // email: ...,
       // name: ...,
       // jwt: ...,
     },
-  },
-  quiz: {
-    flashcards: [],
-    currentFlashcardIndex: -1,
-    isLoading: false,
-    isReady: false,
-    isInError: false,
-    isFinished: false
   },
   collection: {
     decks: [],
@@ -31,6 +23,14 @@ const INITIAL_STATE = {
     isFetching: false,
     isInError: false,
     error: {}
+  },
+  quiz: {
+    flashcards: [],
+    currentFlashcardIndex: -1,
+    isLoading: false,
+    isReady: false,
+    isInError: false,
+    isFinished: false
   }
 };
 

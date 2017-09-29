@@ -11,11 +11,9 @@
  */
 
 import Home from "./components/page/Home.jsx";
-import Login from "./components/page/Login.jsx";
 import Quiz from "./components/page/Quiz.jsx";
 import Collection from "./components/page/Collection.jsx";
 import Deck from "./components/page/Deck.jsx";
-import Registration from './components/page/Registration.jsx';
 
 import { store, getJSONWebToken } from "./store/index.js";
 import { initiateQuiz } from "./store/actions/quiz.js";
@@ -27,11 +25,6 @@ const routes = [
     name: "Home",
     path: "", // matches /
     body: () => Home
-  },
-  {
-    name: "Login",
-    path: "login",
-    body: () => Login
   },
   {
     name: "Quiz",
@@ -56,11 +49,6 @@ const routes = [
     load: (params, modifiers) => {
       return store.dispatch(getDeckDetailAttempt(getJSONWebToken(), params.deckId));
     }
-  },
-  {
-    name: 'Registration',
-    path: 'registration',
-    body: () => Registration
   }
 ];
 
