@@ -9,6 +9,8 @@
  */
 
 import React from 'react';
+import ModalLogIn from '../modal/ModalLogIn.jsx'
+import ModalSignUp from '../modal/ModalSignUp.jsx'
 
 import { connect } from 'react-redux';
 import { Link } from '@curi/react';
@@ -16,6 +18,7 @@ import { Link } from '@curi/react';
 import { logout } from '../../store/actions/account.js';
 
 export class _Navbar extends React.Component {
+
   render() {
     const { isLoggedIn, onLogout, name } = this.props;
 
@@ -25,25 +28,35 @@ export class _Navbar extends React.Component {
         <nav className="navbar-nav ml-auto">
           {isLoggedIn
             ? <a className="nav-link" href="#" onClick={this.handleLogout.bind(this)}>Logout</a>
-            : <Link className="nav-link btn btn-primary" 
-                    style={ loginBtnStyle }
-                    to="Login">
-                    Log In
-            </Link>}
+            : <button className="btn btn-primary"
+                      data-toggle="modal" 
+                      data-target="#login"
+                      style={ loginBtnStyle }
+                      type="button">
+                      Log In
+            </button>}
+          <ModalLogIn id="login" />
           { this.renderTakeQuizLink()}
           { this.renderCollectionLink()}
           {isLoggedIn
             ? <a className="nav-link" href="#">({name}) My account</a>
             : null}
-          <Link className="nav-link btn" 
-                style={ signinBtnStyle }
-                to="Registration">
-                Sign Up
-          </Link>
+          <button className="btn btn-light"
+                  data-toggle="modal"
+                  data-target="#signup"
+                  style={signUpBtnStyle}
+                  type="button">
+                  Sign Up
+          </button>
+          <ModalSignUp id="signup" />
         </nav> 
       </nav>
     );
   }
+
+  handleLogIn(e){
+    e.preventDefault();
+  } 
 
   handleLogout(e) {
     const { onLogout } = this.props;
@@ -76,14 +89,16 @@ const loginBtnStyle = {
   color: 'white'
 }
 
-const signinBtnStyle = {
+const signUpBtnStyle = {
   color: '#007bff'
 }
 
 const mapStateToProps = state => {
   return {
     name: state.account.data.name,
-    isLoggedIn: state.account.isLoggedIn
+    isLoggedIn: state.account.isLoggedIn,
+    isAuthenticating: state.account.isAuthenticating,
+    isInError: state.account.isInError
   };
 };
 

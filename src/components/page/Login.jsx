@@ -18,10 +18,9 @@ export class _Login extends React.Component {
     const { isAuthenticating, isInError } = this.props;
 
     return (
-      <div className="container">  
+      <div className="container">   
         <div className="row justify-content-center">
-          <form className="col-sm-6"
-                style={logInFormStyle}>
+          <form className="col-sm-6">
             <div className="form-group mt-3">
               <label htmlFor="emailInput">Email</label>
               <input className="form-control"
