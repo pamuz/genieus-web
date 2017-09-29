@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import { attemptRegistration } from '../../store/actions/account.js';
+import { attemptRegistration} from '../../store/actions/account.js';
 
 class _ModalLogIn extends React.Component {
     constructor(props) {

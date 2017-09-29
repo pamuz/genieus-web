@@ -40,23 +40,22 @@ export class _Navbar extends React.Component {
           { this.renderCollectionLink()}
           {isLoggedIn
             ? <a className="nav-link" href="#">({name}) My account</a>
-            : null}
-          <button className="btn btn-light"
-                  data-toggle="modal"
-                  data-target="#signup"
-                  style={signUpBtnStyle}
-                  type="button">
-                  Sign Up
-          </button>
+            : <button className="btn btn-light"
+                      data-toggle="modal"
+                      data-target="#signup"
+                      style={signUpBtnStyle}
+                      type="button">
+                      Sign Up
+              </button>
+          }
+          
           <ModalSignUp id="signup" />
         </nav> 
       </nav>
     );
   }
 
-  handleLogIn(e){
-    e.preventDefault();
-  } 
+  /* Handlers */
 
   handleLogout(e) {
     const { onLogout } = this.props;
@@ -84,7 +83,6 @@ export class _Navbar extends React.Component {
 }
 
 /* Styles */
-
 const loginBtnStyle = {
   color: 'white'
 }
