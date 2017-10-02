@@ -10,7 +10,7 @@
 
 import React from 'react';
 import ModalLogIn from '../modal/ModalLogIn.jsx'
-import ModalSignUp from '../modal/ModalSignUp.jsx'
+import ModalSignUp from '../modal/ModalRegister.jsx'
 
 import { connect } from 'react-redux';
 import { Link } from '@curi/react';
@@ -18,9 +18,21 @@ import { Link } from '@curi/react';
 import { logout } from '../../store/actions/account.js';
 
 export class _Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loginModalShown: false,
+      registerModalShown: false
+    };
+  }
 
   render() {
     const { isLoggedIn, onLogout, name } = this.props;
+    const {
+      loginModalShown,
+      registerModalShown
+    } = this.state;
 
     return (
       <nav className="navbar navbar-expand-sm navbar-light container">
@@ -29,28 +41,25 @@ export class _Navbar extends React.Component {
           {isLoggedIn
             ? <a className="nav-link" href="#" onClick={this.handleLogout.bind(this)}>Logout</a>
             : <button className="btn btn-primary"
-                      data-toggle="modal" 
-                      data-target="#login"
-                      style={ loginBtnStyle }
-                      type="button">
+                      onClick={ () => { this.setState({ loginModalShown: true }) } }>
                       Log In
             </button>}
-          <ModalLogIn id="login" />
           { this.renderTakeQuizLink()}
           { this.renderCollectionLink()}
           {isLoggedIn
             ? <a className="nav-link" href="#">({name}) My account</a>
             : <button className="btn btn-light"
-                      data-toggle="modal"
-                      data-target="#signup"
-                      style={signUpBtnStyle}
+                      onClick={ () => this.setState({ registerModalShown: true }) }
                       type="button">
                       Sign Up
               </button>
           }
-          
-          <ModalSignUp id="signup" />
         </nav> 
+
+        <ModalSignUp show={ registerModalShown }
+                     onHide={ () => this.setState({ registerModalShown: false }) }/>
+        <ModalLogIn show={ loginModalShown }
+                    onHide={ () => this.setState({ loginModalShown: false }) }/>
       </nav>
     );
   }
@@ -93,10 +102,9 @@ const signUpBtnStyle = {
 
 const mapStateToProps = state => {
   return {
-    name: state.account.data.name,
-    isLoggedIn: state.account.isLoggedIn,
-    isAuthenticating: state.account.isAuthenticating,
-    isInError: state.account.isInError
+    isLoggedIn: state.session.isLoggedIn,
+    isAuthenticating: state.session.isAuthenticating,
+    isInError: state.session.isInError
   };
 };
 

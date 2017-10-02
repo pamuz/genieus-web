@@ -10,11 +10,9 @@ import React from 'react';
 import { Link } from '@curi/react';
 
 import { connect } from 'react-redux';
+import { action } from '../../store/actions/api.js';
 
-import {
-  createDeckAttempt,
-  deleteDeckAttempt
-} from '../../store/actions/collection.js';
+const API_ACTIONS = ['attemptCreateDeck', 'attemptDeleteDeck'];
 
 function makeDeckCardStyle(deck) {
   return {
@@ -89,12 +87,23 @@ export class _Collection extends React.Component {
       color: this.deckColorSelect.value
     };
 
-    this.props.createDeckAttempt(attributes);
+    this.props.attemptCreateDeck({
+      payload: {
+        data: {
+          type: 'deck',
+          attributes
+        }
+      }
+    });
   }
 
   deleteDeckBtnClick(event, deckId) {
     event.preventDefault();
-    this.props.deleteDeckAttempt(deckId);
+    this.props.attemptDeleteDeck({
+      pathSubstitutions: {
+        id: deckId
+      }
+    });
   }
 }
 
@@ -103,14 +112,15 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    createDeckAttempt: (attributes) => {
-      dispatch(createDeckAttempt(attributes));
-    },
-    deleteDeckAttempt: (deckId) => {
-      dispatch(deleteDeckAttempt(deckId));
+  const mapper = {};
+
+  API_ACTIONS.forEach( actionName => {
+    mapper[actionName] = (options) => {
+      dispatch(action(actionName)(options));
     }
-  };
+  });
+
+  return mapper;
 }
 
 const Collection = connect(

@@ -12,6 +12,7 @@
     "curi": "^1.0.0-beta.2",
     "hickory": "^0.6.0",
     "react": "^15.6.1",
+    "react-bootstrap": "^0.31.3",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",

@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import account from './account.js';
+import session from './session.js';
 import quiz from './quiz.js';
 import collection from './collection.js';
 import deckDetail from './deck-detail.js';
 
 const rootReducer = combineReducers({
-  account,
+  session,
   quiz,
   collection,
   deckDetail

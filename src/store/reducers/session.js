@@ -1,8 +1,17 @@
 import { INITIAL_STATE } from '../constants.js';
-import { actionType } from '../actions/account.js';
+import { actionType } from '../actions/api.js';
 
-export default function account(state=INITIAL_STATE.session, action) {
+const initialState = Object.assign({}, INITIAL_STATE.session);
+const previousSessionData = window.localStorage.getItem('sessionData');
+
+if (previousSessionData !== null) {
+  initialState.isLoggedIn = true;
+  initialState.data = JSON.parse(previousSessionData);
+}
+
+export default function session(state=initialState, action) {
   switch(action.type) {
+
     case actionType('startCreateSession'):
       return Object.assign({}, state, {
         isAuthenticating: true,
@@ -10,15 +19,16 @@ export default function account(state=INITIAL_STATE.session, action) {
       break;
 
     case actionType('doneCreateSession'):
+      const sessionAttributes = action.response.data.attributes;
+      console.log(sessionAttributes);
+
+      window.localStorage.setItem('sessionData', JSON.stringify(sessionAttributes));
+
       return Object.assign({}, state, {
         isAuthenticating: false,
         isInError: false,
         isLoggedIn: true,
-        data: {
-          email: action.email,
-          name: action.name,
-          jwt: action.jwt,
-        },
+        data: sessionAttributes,
       });
       break;
 
@@ -32,6 +42,8 @@ export default function account(state=INITIAL_STATE.session, action) {
       break;
 
     case 'LOGOUT':
+      window.localStorage.removeItem('sessionData');
+
       return Object.assign({}, state, {
         isAuthenticating: false,
         isInError: false,

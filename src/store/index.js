@@ -16,12 +16,6 @@ let store = createStore(
 
 
 export function getJSONWebToken() {
-  const storeState = store.getState();
-  if (storeState.account.isLoggedIn) {
-    return storeState.account.data.jwt;
-  } else {
-    return undefined;
-  }
 }
 
 export { store };

@@ -15,10 +15,13 @@ import Quiz from "./components/page/Quiz.jsx";
 import Collection from "./components/page/Collection.jsx";
 import Deck from "./components/page/Deck.jsx";
 
-import { store, getJSONWebToken } from "./store/index.js";
+import { store } from "./store/index.js";
+
 import { initiateQuiz } from "./store/actions/quiz.js";
 import { getAllDecksAttempt } from "./store/actions/collection.js";
 import { getDeckDetailAttempt, } from "./store/actions/deck-detail.js";
+
+import { action } from "./store/actions/api.js";
 
 const routes = [
   {
@@ -31,7 +34,7 @@ const routes = [
     path: "quiz",
     body: () => Quiz,
     load: (params, modifiers) => {
-      return store.dispatch(initiateQuiz(getJSONWebToken()));
+      return store.dispatch(action('attemptCreateQuiz')({}));
     }
   },
   {
@@ -39,7 +42,8 @@ const routes = [
     path: "collection",
     body: () => Collection,
     load: (params, modifiers) => {
-      return store.dispatch(getAllDecksAttempt(getJSONWebToken()));
+      console.log(action);
+      return store.dispatch(action('attemptListDecks')({}));
     }
   },
   {
@@ -47,7 +51,16 @@ const routes = [
     path: "deck/:deckId",
     body: () => Deck,
     load: (params, modifiers) => {
-      return store.dispatch(getDeckDetailAttempt(getJSONWebToken(), params.deckId));
+
+      console.log(params);
+      return store.dispatch(action('attemptRetrieveDeck')({
+        pathSubstitutions: {
+          id: params.deckId
+        },
+        query: {
+          include: 'flashcard'
+        }
+      }));
     }
   }
 ];

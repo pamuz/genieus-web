@@ -6,12 +6,9 @@ import _ from 'lodash';
 import React from 'react';
 
 import { connect } from 'react-redux';
+import { action } from '../../store/actions/api.js';
 
-import {
-  createFlashcardAttempt,
-  deleteFlashcardAttempt,
-  updateFlashcardAttempt
-} from '../../store/actions/deck-detail.js';
+const API_ACTIONS = ['attemptCreateFlashcard', 'attemptDeleteFlashcard', 'attemptPatchFlashcard'];
 
 export class _Deck extends React.Component {
   constructor(props) {
@@ -60,9 +57,8 @@ export class _Deck extends React.Component {
               </div>
               <div className="modal-body">
                 <form>
+                  <input name="" type="hidden" ref={ input => this.editorFlashcardIdInput = input }/>
                   <div className="form-group">
-                    <input ref={ element => this.editorFlashcardIdInput = element }
-                           type="hidden"/>
                     <textarea className="form-control" rows="5"
                               ref={ (element) => this.editorFrontInput = element }></textarea>
                     <label>Front</label>
@@ -98,7 +94,7 @@ export class _Deck extends React.Component {
           <h4 className="card-title">{ flashcard.attributes.front.text }</h4>
           <h4 className="card-title">{ flashcard.attributes.back.text }</h4>
           <button className="btn btn-danger"
-                  onClick={ _.partial(this.props.deleteFlashcardAttempt, flashcard.id).bind(this) }>
+                  onClick={ _.partial(this.handleDeleteFlashcardClick.bind(this), flashcard.id) }>
             Trash
           </button>
           <button className="btn btn-info"
@@ -123,6 +119,7 @@ export class _Deck extends React.Component {
 
   showEditorModalPrefilled(flashcard) {
     this.showEditorModal();
+    console.log(flashcard);
     this.editorFlashcardIdInput.value = flashcard.id;
     this.editorFrontInput.value = flashcard.attributes.front.text;
     this.editorBackInput.value = flashcard.attributes.back.text;
@@ -132,6 +129,14 @@ export class _Deck extends React.Component {
     });
 
     // Set the action of the save button to be for flashcard edition
+  }
+
+  handleDeleteFlashcardClick(flashcardId) {
+    this.props.attemptDeleteFlashcard({
+      pathSubstitutions: {
+        id: flashcardId
+      }
+    });
   }
 
   onEditorModalSaveCreate() {
@@ -146,7 +151,17 @@ export class _Deck extends React.Component {
       }
     };
 
-    this.props.createFlashcardAttempt(attributes);
+    this.props.attemptCreateFlashcard({
+      pathSubstitutions: {
+        id: this.props.deck.id
+      },
+      payload: {
+        data: {
+          type: 'flashcard',
+          attributes,
+        }
+      }
+    });
     $(this.editorModal).modal('hide');
   }
 
@@ -163,7 +178,17 @@ export class _Deck extends React.Component {
       }
     };
 
-    this.props.updateFlashcardAttempt(attributes);
+    this.props.attemptPatchFlashcard({
+      pathSubstitutions: {
+        id: this.editorFlashcardIdInput.value,
+      },
+      payload: {
+        data: {
+          type: 'flashcard',
+          attributes
+        }
+      }
+    });
     $(this.editorModal).modal('hide');
   }
 }
@@ -174,18 +199,16 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    createFlashcardAttempt: (attributes) => {
-      dispatch(createFlashcardAttempt(attributes));
-    },
-    deleteFlashcardAttempt: (flashcardId) => {
-      dispatch(deleteFlashcardAttempt({ id: flashcardId }));
-    },
-    updateFlashcardAttempt: (attributes) => {
-      dispatch(updateFlashcardAttempt(attributes));
+  const mapper = {};
+  
+  API_ACTIONS.forEach( actionName => {
+    mapper[actionName] = (options) => {
+      dispatch(action(actionName)(options));
     }
-  };
-}
+  });
+  
+  return mapper;
+ }
 
 const Deck = connect(
   mapStateToProps,

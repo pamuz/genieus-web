@@ -1,45 +1,40 @@
 import { INITIAL_STATE } from '../constants.js';
-import {
-  GET_ALL_DECKS_INITIATED,
-  GET_ALL_DECKS_SUCCESS,
-  GET_ALL_DECKS_FAILURE,
-  CREATE_DECK_INITIATED,
-  CREATE_DECK_SUCCESS,
-  CREATE_DECK_FAILURE,
-  DELETE_DECK_INITIATED,
-  DELETE_DECK_SUCCESS,
-  DELETE_DECK_FAILURE,
-} from '../actions/collection.js';
+import { actionType } from '../actions/api.js';
 
 export default function collection(state=INITIAL_STATE.collection, action) {
   switch(action.type) {
-    case GET_ALL_DECKS_INITIATED:
+    case actionType('startListDecks'):
       return Object.assign({}, state, {
         isFetching: true,
         isInError: false
       });
-    case GET_ALL_DECKS_SUCCESS:
+
+    case actionType('doneListDecks'):
       return Object.assign({}, state, {
         isFetching: false,
         isInError: false,
-        decks: action.payload
+        decks: action.response.data
       });
-    case GET_ALL_DECKS_FAILURE:
+
+    case actionType('failListDecks'):
       return Object.assing({}, state, {
         isFetching: false,
         isInError: true,
-        error: error
+        error: action.response.error
       });
-    case CREATE_DECK_SUCCESS:
+
+    case actionType('doneCreateDeck'):
       return Object.assign({}, state, {
-        decks: state.decks.concat([action.payload])
+        decks: state.decks.concat([action.response.data])
       });
-    case CREATE_DECK_FAILURE:
+
+    case actionType('failCreateDeck'):
       return Object.assign({}, state, {
         isInError: true
       });
-    case DELETE_DECK_SUCCESS:
-      const deckId = action.payload;
+
+    case actionType('doneDeleteDeck'):
+      const deckId = action.response.data.id;
       const deletedDeckIndex = _.findIndex(state.decks, deck => deck.id == deckId);
       const newDecks = state.decks.concat();
       newDecks.splice(deletedDeckIndex, 1);
@@ -47,6 +42,7 @@ export default function collection(state=INITIAL_STATE.collection, action) {
       return Object.assign({}, state, {
         decks: newDecks
       });
+
     default:
       return state;
   }
