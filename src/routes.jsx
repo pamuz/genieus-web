@@ -34,7 +34,11 @@ const routes = [
     path: "quiz",
     body: () => Quiz,
     load: (params, modifiers) => {
-      return store.dispatch(action('attemptCreateQuiz')({}));
+      return store.dispatch(action('attemptRetrieveQuizFlashcards')({
+        pathSubstitutions: {
+          id: '88d3fc06-ef4d-42c1-b78f-56e28b125b79',
+        }
+      }));
     }
   },
   {
@@ -51,8 +55,6 @@ const routes = [
     path: "deck/:deckId",
     body: () => Deck,
     load: (params, modifiers) => {
-
-      console.log(params);
       return store.dispatch(action('attemptRetrieveDeck')({
         pathSubstitutions: {
           id: params.deckId

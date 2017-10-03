@@ -11,6 +11,10 @@ import { Link } from '@curi/react';
 
 import { connect } from 'react-redux';
 import { action } from '../../store/actions/api.js';
+import SmartForm from '../reusable/SmartForm.jsx';
+import Modal from '../reusable/Modal.jsx';
+import Button from '../reusable/Button.jsx';
+import Card from '../reusable/Card.jsx';
 
 const API_ACTIONS = ['attemptCreateDeck', 'attemptDeleteDeck'];
 
@@ -24,10 +28,20 @@ function makeDeckCardStyle(deck) {
 export class _Collection extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      createDeckModalShown: false
+    };
   }
 
   render() {
-    const { isAuthenticating, isInError } = this.props;
+    const {
+      isAuthenticating,
+      isInError
+    } = this.props;
+
+    const {
+      createDeckModalShown
+    } = this.state;
 
     const allDecks = this.props.decks;
 
@@ -35,43 +49,54 @@ export class _Collection extends React.Component {
       <div>
         <h1>Deck collection</h1>
 
-        <form onSubmit={ this.deckCreateFormSubmit.bind(this) } action="">
-          <div className="form-group">
-            <label className="mr-2"
-                   htmlFor="deckNameInput">Name </label>
-            <input id="deckNameInput"
-                   ref={input => this.deckNameInput = input}
-                   type="text" />
-          </div>
-          <div className="form-group">
-            <label className="mr-3"
-                   htmlFor="deckColorSelect">Color </label>
-            <input id="deckColorSelect"
-                   ref={select => this.deckColorSelect = select}
-                   type="text" />
-          </div>
-          <input id="deckColorSelect"
-                 className="btn btn-primary" 
-                 name="" 
-                 type="submit" 
-                 value="Save"/>
-        </form>
+        {/* A modal with a form to create a new deck */}
+        <Modal show={ createDeckModalShown }
+               onHide={ () => this.setState({ createDeckModalShown: false }) }>
+          <Modal.Header>
+            <Modal.Title>Create Deck</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <SmartForm ref={ form => this.createDeckForm = form }
+                       spec={[
+                         {
+                           'name': 'name',
+                           'type': 'text',
+                           'label': 'Name'
+                         },
+                         {
+                           'name': 'color',
+                           'type': 'text',
+                           'label': 'Color'
+                         }
+                       ]} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button bsStyle="primary"
+                    onClick={ () => this.attemptCreateDeck() }>Create</Button>
+            <Button>Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Button bsStyle="success"
+                onClick={ () => this.setState({ createDeckModalShown: true }) }>
+          +
+        </Button>
 
         {
           allDecks.map(deck => {
             return (
-              <div className="card" style={{ "width": "20rem" }}>
-                <div className="card-body">
-                  <h4 className="card-title" style={{ color: deck.attributes.color }}>{ deck.attributes.name }</h4>
+              <Card>
+                <Card.Body>
+                  <Card.Title style={{ color: deck.attributes.color }}>
+                    { deck.attributes.name }
+                  </Card.Title>
                   <Link className="btn btn-primary"
                         to="Deck"
                         params={{ deckId: deck.id }}>Detail</Link>
-                <button className="btn btn-danger"
-                  onClick={ _.partial(this.deleteDeckBtnClick, _, deck.id).bind(this) }>
-                  Trash
-                </button>
-                </div>
-              </div>
+                  <Button bsStyle="danger"
+                          onClick={ () => this.attemptDeleteDeck(deck.id) }>X</Button>
+                </Card.Body>
+              </Card>
             );
           })
         }
@@ -79,13 +104,8 @@ export class _Collection extends React.Component {
     );
   }
 
-  deckCreateFormSubmit(event) {
-    event.preventDefault();
-
-    const attributes = {
-      name: this.deckNameInput.value,
-      color: this.deckColorSelect.value
-    };
+  attemptCreateDeck() {
+    const attributes = this.createDeckForm.getValues();
 
     this.props.attemptCreateDeck({
       payload: {
@@ -97,7 +117,7 @@ export class _Collection extends React.Component {
     });
   }
 
-  deleteDeckBtnClick(event, deckId) {
+  attemptDeleteDeck(deckId) {
     event.preventDefault();
     this.props.attemptDeleteDeck({
       pathSubstitutions: {

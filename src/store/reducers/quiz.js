@@ -1,28 +1,26 @@
 import { INITIAL_STATE } from '../constants.js';
-import {
-  QUIZ_INITIATED,
-  QUIZ_INITIATED_SUCCESS,
-  QUIZ_INITIATED_FAILURE,
-  RATE_FLASCHARD_REVIEW,
-} from '../actions/quiz.js';
+import { actionType } from '../actions/api.js';
 
 export default function account(state=INITIAL_STATE.quiz, action) {
   switch(action.type) {
-    case QUIZ_INITIATED:
+
+    case actionType('startRetrieveQuizFlashcards'):
       return Object.assign({}, state, {
         isLoading: true,
       });
       break;
-    case QUIZ_INITIATED_SUCCESS:
+
+    case actionType('doneRetrieveQuizFlashcards'):
       return Object.assign({}, state, {
         isLoading: false,
         isInError: false,
         isReady: true,
-        flashcards: action.flashcardsToShowInQuiz,
+        flashcards: action.response.data,
         currentFlashcardIndex: 0
       });
       break;
-    case QUIZ_INITIATED_FAILURE:
+
+    case actionType('failRetrieveQuizFlashcards'):
       return Object.assign({}, state, {
         isLoading: false,
         isInError: true,
@@ -31,13 +29,16 @@ export default function account(state=INITIAL_STATE.quiz, action) {
         currentFlashcardIndex: -1
       });
       break;
-    case RATE_FLASCHARD_REVIEW:
+
+    case 'RATE_FLASHCARD_REVIEW':
       let nextIndex = state.currentFlashcardIndex;
       let nextIsFinished = true;
 
       if (state.currentFlashcardIndex < state.flashcards.length - 1) {
         nextIndex++;
         nextIsFinished = false;
+      } else {
+        console.log('getting out');
       }
 
       return Object.assign({}, state, {
@@ -45,6 +46,7 @@ export default function account(state=INITIAL_STATE.quiz, action) {
         isFinished: nextIsFinished
       });
       break;
+
     default:
       return state;
   }
