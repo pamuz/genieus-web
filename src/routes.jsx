@@ -11,16 +11,17 @@
  */
 
 import Home from "./components/page/Home.jsx";
-import Login from "./components/page/Login.jsx";
 import Quiz from "./components/page/Quiz.jsx";
 import Collection from "./components/page/Collection.jsx";
 import Deck from "./components/page/Deck.jsx";
-import Registration from './components/page/Registration.jsx';
 
-import { store, getJSONWebToken } from "./store/index.js";
+import { store } from "./store/index.js";
+
 import { initiateQuiz } from "./store/actions/quiz.js";
 import { getAllDecksAttempt } from "./store/actions/collection.js";
 import { getDeckDetailAttempt, } from "./store/actions/deck-detail.js";
+
+import { action } from "./store/actions/api.js";
 
 const routes = [
   {
@@ -29,16 +30,15 @@ const routes = [
     body: () => Home
   },
   {
-    name: "Login",
-    path: "login",
-    body: () => Login
-  },
-  {
     name: "Quiz",
     path: "quiz",
     body: () => Quiz,
     load: (params, modifiers) => {
-      return store.dispatch(initiateQuiz(getJSONWebToken()));
+      return store.dispatch(action('attemptRetrieveQuizFlashcards')({
+        pathSubstitutions: {
+          id: '88d3fc06-ef4d-42c1-b78f-56e28b125b79',
+        }
+      }));
     }
   },
   {
@@ -46,7 +46,8 @@ const routes = [
     path: "collection",
     body: () => Collection,
     load: (params, modifiers) => {
-      return store.dispatch(getAllDecksAttempt(getJSONWebToken()));
+      console.log(action);
+      return store.dispatch(action('attemptListDecks')({}));
     }
   },
   {
@@ -54,13 +55,15 @@ const routes = [
     path: "deck/:deckId",
     body: () => Deck,
     load: (params, modifiers) => {
-      return store.dispatch(getDeckDetailAttempt(getJSONWebToken(), params.deckId));
+      return store.dispatch(action('attemptRetrieveDeck')({
+        pathSubstitutions: {
+          id: params.deckId
+        },
+        query: {
+          include: 'flashcard'
+        }
+      }));
     }
-  },
-  {
-    name: 'Registration',
-    path: 'registration',
-    body: () => Registration
   }
 ];
 

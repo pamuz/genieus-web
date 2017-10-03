@@ -6,20 +6,38 @@ import _ from 'lodash';
 import React from 'react';
 
 import { connect } from 'react-redux';
+import { action } from '../../store/actions/api.js';
+import Card from '../reusable/Card.jsx';
+import Button from '../reusable/Button.jsx';
 
-import {
-  createFlashcardAttempt,
-  deleteFlashcardAttempt,
-  updateFlashcardAttempt
-} from '../../store/actions/deck-detail.js';
+const SPECIAL_NEW_FLASHCARD_ID = 'special';
+
+const API_ACTIONS = [
+  'attemptCreateFlashcard',
+  'attemptDeleteFlashcard',
+  'attemptPatchFlashcard'
+];
 
 export class _Deck extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      onEditorSaveAction: this.onEditorModalSaveCreate
+      onEditorSaveAction: this.onEditorModalSaveCreate,
+      idOfFlashcardBeingEdited: undefined
     }
+  }
+
+  componentDidMount(){
+    document.addEventListener("keydown",
+                              this.clearFlashcardBeingEdited.bind(this),
+                              false);
+  }
+
+  componentWillUnmount(){
+    document.removeEventListener("keydown",
+                                 this.clearFlashcardBeingEdited.bind(this),
+                                 false);
   }
 
   render() {
@@ -31,7 +49,7 @@ export class _Deck extends React.Component {
       flashcards
     } = this.props;
 
-    if (isFetching) {
+    if (isFetching || deck === undefined) {
       return (
         <p>Loading...</p>
       );
@@ -41,150 +59,191 @@ export class _Deck extends React.Component {
       <div>
         <h1 style={{ color: deck.attributes.color }}>{ deck.attributes.name }</h1>
 
-        <div className="card">
-          <div className="card-body" style={{ padding: 10 }}>
-            <button className="btn btn-default"
-                    onClick={ this.showEditorModal.bind(this) }>+</button>
-          </div>
-        </div>
-
-        {/* toolbar  */}
-        <div className="modal" ref={ (modal) => this.editorModal = modal }>
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Flashcard Editor</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <div className="form-group">
-                    <input ref={ element => this.editorFlashcardIdInput = element }
-                           type="hidden"/>
-                    <textarea className="form-control" rows="5"
-                              ref={ (element) => this.editorFrontInput = element }></textarea>
-                    <label>Front</label>
-                  </div>
-                  <div className="form-group">
-                    <textarea className="form-control" rows="5"
-                              ref={ (element) => this.editorBackInput = element }></textarea>
-                    <label>Back</label>
-                  </div>
-                </form>
-              </div>
-              <div className="modal-footer">
-                <button type="button"
-                        className="btn btn-primary"
-                        onClick={ this.state.onEditorSaveAction.bind(this) }>Save changes</button>
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
+        <div className="container">
           { flashcards.map(this.renderFlashcard.bind(this)) }
+
+          {/* A special "flashcard" that can be used to create new flashcards */}
+          { this.renderSpecialCreateFlashcard() }
         </div>
+
       </div>
     );
   }
 
+  attemptCreateFlashcard() {
+    const attributes = {
+      "deck_id": this.props.deck.id,
+      "type": "text",
+      "front": {
+        "text": this.flashcardBeingEditedFrontTextarea.value
+      },
+      "back": {
+        "text": this.flashcardBeingEditedBackTextarea.value
+      }
+    };
+
+    this.props.attemptCreateFlashcard({
+      pathSubstitutions: {
+        id: this.props.deck.id
+      },
+      payload: {
+        data: {
+          type: 'flashcard',
+          attributes,
+        }
+      }
+    });
+    $(this.editorModal).modal('hide');
+  }
+
+  attemptPatchFlashcard(flashcard) {
+    const attributes = {
+      "deck_id": this.props.deck.id,
+      "type": "text",
+      "front": {
+        "text": this.flashcardBeingEditedFrontTextarea.value
+      },
+      "back": {
+        "text": this.flashcardBeingEditedBackTextarea.value
+      }
+    };
+
+    this.props.attemptPatchFlashcard({
+      pathSubstitutions: {
+        id: flashcard.id
+      },
+      payload: {
+        data: {
+          type: 'flashcard',
+          attributes
+        }
+      }
+    });
+    $(this.editorModal).modal('hide');
+  }
+
+  // Renders a flashcard inside a card element. If the flashcard
+  // is currently being edited, e.g. this.state.idOfFlashcardBeingEdited
+  // === flashcard.id, the front and back text are shown in textareas
+  // instead.
   renderFlashcard(flashcard) {
+    const isBeingEdited = this.state.idOfFlashcardBeingEdited === flashcard.id;
+
+    const firstButtonAction = (
+      isBeingEdited
+      ? () => this.attemptPatchFlashcard(flashcard)
+          : () => this.setState({ idOfFlashcardBeingEdited: flashcard.id })
+    );
+
+    const frontText = flashcard.attributes.front.text;
+    const backText = flashcard.attributes.back.text;
+
     return (
-      <div className="card" style={{ "width": "20rem" }}>
-        <div className="card-body">
-          <h4 className="card-title">{ flashcard.attributes.front.text }</h4>
-          <h4 className="card-title">{ flashcard.attributes.back.text }</h4>
-          <button className="btn btn-danger"
-                  onClick={ _.partial(this.props.deleteFlashcardAttempt, flashcard.id).bind(this) }>
-            Trash
-          </button>
-          <button className="btn btn-info"
-                  ref={ element => this.saveChangesButton = element }
-                  onClick={ _.partial(this.showEditorModalPrefilled, flashcard).bind(this) }>
-            Edit
-          </button>
+      <div className="row" key={ flashcard.id } style={{ marginTop: 15 }}>
+        <Card className="col-md-5">
+          <Card.Body>
+            { isBeingEdited
+              ? <textarea
+                  className="form-control" rows="2"
+                  ref={ textarea =>
+                    this.flashcardBeingEditedFrontTextarea = textarea }
+                  defaultValue={ frontText }></textarea>
+              : frontText }
+          </Card.Body>
+        </Card>
+        <Card className="col-md-5">
+          <Card.Body>
+            { isBeingEdited
+              ? <textarea
+                  className="form-control" rows="2"
+                  ref={ textarea =>
+                    this.flashcardBeingEditedBackTextarea = textarea }
+                  defaultValue={ backText }></textarea>
+              : backText }
+          </Card.Body>
+        </Card>
+        <div className="col-md-2">
+          <Button
+            onClick={ firstButtonAction }>
+            { isBeingEdited ? 'S' : 'E' }
+          </Button>
+          <Button onClick={
+            () => {
+              this.props.attemptDeleteFlashcard({
+                pathSubstitutions: { id: flashcard.id }
+              })}} >X</Button>
         </div>
       </div>
     );
   }
 
-  showEditorModal() {
-    $(this.editorModal).modal('show');
+  renderSpecialCreateFlashcard() {
+    const isBeingEdited = (this.state.idOfFlashcardBeingEdited
+      === SPECIAL_NEW_FLASHCARD_ID);
 
-    this.setState({
-      onEditorSaveAction: this.onEditorModalSaveCreate.bind(this)
-    });
+    const firstButtonAction = (
+      isBeingEdited
+      ? this.attemptCreateFlashcard.bind(this)
+      : () => this.setState({ idOfFlashcardBeingEdited: SPECIAL_NEW_FLASHCARD_ID })
+    );
 
-    // Set the action of the save button to be for flashcard creation
+    return (
+      <div className="row" style={{ marginTop: 15 }}>
+        <Card className="col-md-5">
+          <Card.Body>
+            { isBeingEdited
+              ? <textarea
+                  className="form-control" rows="2"
+                  ref={ textarea =>
+                    this.flashcardBeingEditedFrontTextarea = textarea } >
+              </textarea>
+              : 'New' }
+          </Card.Body>
+        </Card>
+        <Card className="col-md-5">
+          <Card.Body>
+            { isBeingEdited
+              ? <textarea
+                  className="form-control" rows="2"
+                  ref={ textarea =>
+                    this.flashcardBeingEditedBackTextarea = textarea } >
+              </textarea>
+              : 'New' }
+          </Card.Body>
+        </Card>
+        <div className="col-md-2">
+          <Button
+            onClick={ firstButtonAction }>
+            { isBeingEdited ? 'S' : 'E' }
+          </Button>
+        </div>
+      </div>
+    );
   }
 
-  showEditorModalPrefilled(flashcard) {
-    this.showEditorModal();
-    this.editorFlashcardIdInput.value = flashcard.id;
-    this.editorFrontInput.value = flashcard.attributes.front.text;
-    this.editorBackInput.value = flashcard.attributes.back.text;
-
-    this.setState({
-      onEditorSaveAction: this.onEditorModalSaveEdit.bind(this)
-    });
-
-    // Set the action of the save button to be for flashcard edition
-  }
-
-  onEditorModalSaveCreate() {
-    const attributes = {
-      "deck_id": this.props.deck.id,
-      "type": "text",
-      "front": {
-        "text": this.editorFrontInput.value
-      },
-      "back": {
-        "text": this.editorBackInput.value
-      }
-    };
-
-    this.props.createFlashcardAttempt(attributes);
-    $(this.editorModal).modal('hide');
-  }
-
-  onEditorModalSaveEdit() {
-    const attributes = {
-      "id": this.editorFlashcardIdInput.value,
-      "deck_id": this.props.deck.id,
-      "type": "text",
-      "front": {
-        "text": this.editorFrontInput.value
-      },
-      "back": {
-        "text": this.editorBackInput.value
-      }
-    };
-
-    this.props.updateFlashcardAttempt(attributes);
-    $(this.editorModal).modal('hide');
+  clearFlashcardBeingEdited(event) {
+    if (event.keyCode === 27) { // Escape
+      this.setState({
+        idOfFlashcardBeingEdited: undefined
+      });
+    }
   }
 }
 
 function mapStateToProps(state) {
-  console.log(state.deckDetail);
   return Object.assign({}, state.deckDetail);
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    createFlashcardAttempt: (attributes) => {
-      dispatch(createFlashcardAttempt(attributes));
-    },
-    deleteFlashcardAttempt: (flashcardId) => {
-      dispatch(deleteFlashcardAttempt({ id: flashcardId }));
-    },
-    updateFlashcardAttempt: (attributes) => {
-      dispatch(updateFlashcardAttempt(attributes));
+  const mapper = {};
+  
+  API_ACTIONS.forEach( actionName => {
+    mapper[actionName] = (options) => {
+      dispatch(action(actionName)(options));
     }
-  };
+  });
+  
+  return mapper;
 }
 
 const Deck = connect(

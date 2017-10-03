@@ -7,13 +7,16 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import Card from '../property/Card.jsx';
-
-import { rateFlashcardReview } from '../../store/actions/quiz.js'
+import Card from '../reusable/Card.jsx';
+import Button from '../reusable/Button.jsx';
 
 export class _Quiz extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      currentFlashcardVisibleSide: 'front'
+    };
   }
 
   /* 
@@ -24,61 +27,61 @@ export class _Quiz extends React.Component {
    * The other thing render can display is a card.   
    */
   render() {
-    const { flashcards, currentFlashcardIndex, isFinished } = this.props;
-    const cardBeingDisplayed = flashcards[currentFlashcardIndex];
-    console.log(cardBeingDisplayed);
+    const {
+      flashcards,
+      currentFlashcardIndex,
+      isFinished
+    } = this.props;
 
-    if (flashcards.length) {
+    const {
+      currentFlashcardVisibleSide
+    } = this.state;
+
+    if (flashcards.length && !isFinished) {
+      const flashcardBeingDisplayed = flashcards[currentFlashcardIndex];
+      const textBeingDisplayed = (
+        flashcardBeingDisplayed.attributes[currentFlashcardVisibleSide].text);
+
       return (
-        <div className="gn-quiz-page">
-          <div className="gn-quiz-container">
-            { isFinished
-              ?
-              <p>You're done, interested in a new quiz?</p>
-              :
-              <div>
-                <Card
-                  key={ currentFlashcardIndex } // Key is being used to trigger re-init on change
-                  ref={ (card) => this.card = card }
-                  flashcardData={ cardBeingDisplayed } />
-                <button onClick={ () => this.flipCard() }>Flip</button>
-                <button
-                  className="gn-rate-bad"
-                  onClick={ () => this.rateCard() }>&#9785;</button>
-                  <button
-                    className="gn-rate-neutral"
-                    onClick={ () => this.rateCard() }>-.-</button>
-                  <button
-                    className="gn-rate-happy"
-                    onClick={ () => this.rateCard() }>&#9786;</button>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 col-md-offset-3">
+              <Card>
+                <Card.Body className="text-center" style={{ minHeight: 150 }}>
+                  { textBeingDisplayed }
+                </Card.Body>
+              </Card>
+              <div class="text-center">
+                <Button bsStyle="default" onClick={ () => this.flipCard() }>Flip</Button>
+                <Button bsStyle="danger" onClick={ () => this.rateCard() }>:(</Button>
+                <Button bsStyle="default" onClick={ () => this.rateCard() }>-.-</Button>
+                <Button bsStyle="success" onClick={ () => this.rateCard() }>:)</Button>
               </div>
-            }
+            </div>
           </div>
         </div>
       );
-    } else {
+    } else if(isFinished) {
       return (
         <div className="gn-quiz-page">
-          <div className="gn-quiz-container">
-            <p>There doesn't seem to be any flashcards in this quiz.</p>
+          <div className="gn-quiz-container text-center">
+            <p>You've completed this quiz.</p>
           </div>
         </div>
       );
     }
+
+    return null;
   }
 
-  /* 
-   * Call onto the flip public method of the Card component that is currently
-   * being displayed.
-   */
   flipCard() {
-    this.card.flip();
+    const nextSide = this.state.currentFlashcardVisibleSide === 'front'
+                   ? 'back' : 'front';
+    this.setState({
+      currentFlashcardVisibleSide: nextSide
+    });
   }
 
-  /*
-   * In the future this will make an API call to notify the server that a card
-   * was reviewed, and with what performance. Then it will advance the card.
-   */
   rateCard() {
     this.props.rateFlashcardReview();
   }
@@ -92,8 +95,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     rateFlashcardReview: () => {
-      // TODO dispatch should send the numeric value of the review score
-      dispatch(rateFlashcardReview());
+      dispatch({
+        type: 'RATE_FLASHCARD_REVIEW'
+      });
     }
   }
 };

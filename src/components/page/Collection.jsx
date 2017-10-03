@@ -10,11 +10,13 @@ import React from 'react';
 import { Link } from '@curi/react';
 
 import { connect } from 'react-redux';
+import { action } from '../../store/actions/api.js';
+import SmartForm from '../reusable/SmartForm.jsx';
+import Modal from '../reusable/Modal.jsx';
+import Button from '../reusable/Button.jsx';
+import Card from '../reusable/Card.jsx';
 
-import {
-  createDeckAttempt,
-  deleteDeckAttempt
-} from '../../store/actions/collection.js';
+const API_ACTIONS = ['attemptCreateDeck', 'attemptDeleteDeck'];
 
 function makeDeckCardStyle(deck) {
   return {
@@ -26,10 +28,20 @@ function makeDeckCardStyle(deck) {
 export class _Collection extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      createDeckModalShown: false
+    };
   }
 
   render() {
-    const { isAuthenticating, isInError } = this.props;
+    const {
+      isAuthenticating,
+      isInError
+    } = this.props;
+
+    const {
+      createDeckModalShown
+    } = this.state;
 
     const allDecks = this.props.decks;
 
@@ -37,29 +49,54 @@ export class _Collection extends React.Component {
       <div>
         <h1>Deck collection</h1>
 
-        <form onSubmit={ this.deckCreateFormSubmit.bind(this) } action="">
-          <label>Name</label>
-          <input type="text" ref={ input => this.deckNameInput = input }/>
-          <label>Color</label>
-          <input type="text" ref={ select => this.deckColorSelect = select }/>
-          <input name="" type="submit" value="Save"/>
-        </form>
+        {/* A modal with a form to create a new deck */}
+        <Modal show={ createDeckModalShown }
+               onHide={ () => this.setState({ createDeckModalShown: false }) }>
+          <Modal.Header>
+            <Modal.Title>Create Deck</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <SmartForm ref={ form => this.createDeckForm = form }
+                       spec={[
+                         {
+                           'name': 'name',
+                           'type': 'text',
+                           'label': 'Name'
+                         },
+                         {
+                           'name': 'color',
+                           'type': 'text',
+                           'label': 'Color'
+                         }
+                       ]} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button bsStyle="primary"
+                    onClick={ () => this.attemptCreateDeck() }>Create</Button>
+            <Button>Cancel</Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Button bsStyle="success"
+                onClick={ () => this.setState({ createDeckModalShown: true }) }>
+          +
+        </Button>
 
         {
           allDecks.map(deck => {
             return (
-              <div className="card" style={{ "width": "20rem" }}>
-                <div className="card-body">
-                  <h4 className="card-title" style={{ color: deck.attributes.color }}>{ deck.attributes.name }</h4>
+              <Card>
+                <Card.Body>
+                  <Card.Title style={{ color: deck.attributes.color }}>
+                    { deck.attributes.name }
+                  </Card.Title>
                   <Link className="btn btn-primary"
                         to="Deck"
                         params={{ deckId: deck.id }}>Detail</Link>
-                <button className="btn btn-danger"
-                  onClick={ _.partial(this.deleteDeckBtnClick, _, deck.id).bind(this) }>
-                  Trash
-                </button>
-                </div>
-              </div>
+                  <Button bsStyle="danger"
+                          onClick={ () => this.attemptDeleteDeck(deck.id) }>X</Button>
+                </Card.Body>
+              </Card>
             );
           })
         }
@@ -67,20 +104,26 @@ export class _Collection extends React.Component {
     );
   }
 
-  deckCreateFormSubmit(event) {
-    event.preventDefault();
+  attemptCreateDeck() {
+    const attributes = this.createDeckForm.getValues();
 
-    const attributes = {
-      name: this.deckNameInput.value,
-      color: this.deckColorSelect.value
-    };
-
-    this.props.createDeckAttempt(attributes);
+    this.props.attemptCreateDeck({
+      payload: {
+        data: {
+          type: 'deck',
+          attributes
+        }
+      }
+    });
   }
 
-  deleteDeckBtnClick(event, deckId) {
+  attemptDeleteDeck(deckId) {
     event.preventDefault();
-    this.props.deleteDeckAttempt(deckId);
+    this.props.attemptDeleteDeck({
+      pathSubstitutions: {
+        id: deckId
+      }
+    });
   }
 }
 
@@ -89,14 +132,15 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    createDeckAttempt: (attributes) => {
-      dispatch(createDeckAttempt(attributes));
-    },
-    deleteDeckAttempt: (deckId) => {
-      dispatch(deleteDeckAttempt(deckId));
+  const mapper = {};
+
+  API_ACTIONS.forEach( actionName => {
+    mapper[actionName] = (options) => {
+      dispatch(action(actionName)(options));
     }
-  };
+  });
+
+  return mapper;
 }
 
 const Collection = connect(

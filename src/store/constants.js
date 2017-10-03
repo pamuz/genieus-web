@@ -1,16 +1,33 @@
+const API_BASE = 'http://localhost:5000';
+
 const INITIAL_STATE = {
-  account: {
-    isAuthenticating: false,
-    isRegistering: false,
+  session: {
     isInRegisteringError: false,
+    isRegistering: false,
+    isAuthenticating: false,
     isLoggedIn: false,
-    isInAuthenticateError: false,
+    error: undefined,
     data: {
-      // email: ...,
-      // name: ...,
-      // jwt: ...,
-    },
+      // email
+      // json_web_token
+    }
   },
+
+  collection: {
+    decks: [],
+    isFetching: false,
+    isInError: false,
+    error: {}
+  },
+
+  deckDetail: {
+    deck: {},
+    flashcards: [],
+    isFetching: false,
+    isInError: false,
+    error: {}
+  },
+
   quiz: {
     flashcards: [],
     currentFlashcardIndex: -1,
@@ -18,20 +35,10 @@ const INITIAL_STATE = {
     isReady: false,
     isInError: false,
     isFinished: false
-  },
-  collection: {
-    decks: [],
-    isFetching: false,
-    isInError: false,
-    error: {}
-  },
-  deckDetail: {
-    deck: {},
-    flashcards: [],
-    isFetching: false,
-    isInError: false,
-    error: {}
   }
 };
 
-export { INITIAL_STATE };
+export {
+  INITIAL_STATE,
+  API_BASE
+};

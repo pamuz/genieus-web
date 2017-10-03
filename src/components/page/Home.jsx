@@ -9,9 +9,13 @@ export default class Home extends React.Component {
     return (
       <div className="container">
         <div className="row justify-content-center">
-          <h1>Welcome to genieus!</h1>
+          <h1 style={ headerStyle }>Welcome to genieus!</h1>
         </div>
       </div>
     );
   }
+}
+
+const headerStyle = {
+  color: 'white'
 }
