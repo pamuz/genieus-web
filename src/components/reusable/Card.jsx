@@ -75,7 +75,7 @@ class Card extends React.Component {
   render() {
     const classes = classnames({
       [this.props.className || '']: true,
-      'card': true
+      'card': true,
     });
 
     return (

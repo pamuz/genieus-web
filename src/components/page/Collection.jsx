@@ -70,7 +70,7 @@ export class _Collection extends React.Component {
           </Modal.Footer>
         </Modal>
 
-        <Button bsStyle="success" onClick={() => this.setState({
+        <Button style={{display:"block", marginBottom:"20px"}}bsStyle="success" onClick={() => this.setState({
               createDeckModalShown: true
             })}>
           +
@@ -79,7 +79,10 @@ export class _Collection extends React.Component {
         {allDecks.map(deck => {
           return <Card style={{ border: "1.5px solid", 
                                 borderColor: deck.attributes.color, 
-                                width:"30rem"}}>
+                                width:"30rem",
+                                display: "inline-flex",
+                                marginRight: "50px",
+                                marginBottom: "50px"}}>
               <Card.Header style={{ backgroundColor: deck.attributes.color, 
                                     marginTop: "0px", 
                                     color: "white" }}>
@@ -97,10 +100,13 @@ export class _Collection extends React.Component {
               </Card.Body>
               <Card.Footer style={{backgroundColor:'transparent', border:"transparent"}}>
               <div className="row justify-content-end">
-                <Link className="btn btn-primary mr-3" to="Deck" params={{ deckId: deck.id }}>
+                <Link className="btn mr-3" style={{backgroundColor: deck.attributes.color, color: 'white'}}
+                      to="Deck" params={{ deckId: deck.id }}>
                   Detail
                 </Link>
-                <Button bsStyle="danger mr-3" onClick={() => this.attemptDeleteDeck(deck.id)}>
+                <Button className= "mr-3" style={{color: deck.attributes.color , backgroundColor: "white", 
+                                                  border: "1.5px solid",
+                                                  borderColor: deck.attributes.color}} onClick={() => this.attemptDeleteDeck(deck.id)}>
                   X
                 </Button>
               </div>
