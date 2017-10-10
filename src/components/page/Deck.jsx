@@ -139,8 +139,8 @@ export class _Deck extends React.Component {
     const backText = flashcard.attributes.back.text;
 
     return (
-      <div className="row" key={ flashcard.id } style={{ marginTop: 15 }}>
-        <Card className="col-md-5">
+      <div className="row justify-content-around" key={ flashcard.id } style={{ marginTop: 15 }}>
+        <Card className="col-md-4">
           <Card.Body>
             { isBeingEdited
               ? <textarea
@@ -151,7 +151,7 @@ export class _Deck extends React.Component {
               : frontText }
           </Card.Body>
         </Card>
-        <Card className="col-md-5">
+        <Card className="col-md-4">
           <Card.Body>
             { isBeingEdited
               ? <textarea
@@ -188,8 +188,8 @@ export class _Deck extends React.Component {
     );
 
     return (
-      <div className="row" style={{ marginTop: 15 }}>
-        <Card className="col-md-5">
+      <div className="row justify-content-around" style={{ marginTop: 15 }}>
+        <Card className="col-md-4">
           <Card.Body>
             { isBeingEdited
               ? <textarea
@@ -197,10 +197,10 @@ export class _Deck extends React.Component {
                   ref={ textarea =>
                     this.flashcardBeingEditedFrontTextarea = textarea } >
               </textarea>
-              : 'New' }
+              : 'Front' }
           </Card.Body>
         </Card>
-        <Card className="col-md-5">
+        <Card className="col-md-4">
           <Card.Body>
             { isBeingEdited
               ? <textarea
@@ -208,7 +208,7 @@ export class _Deck extends React.Component {
                   ref={ textarea =>
                     this.flashcardBeingEditedBackTextarea = textarea } >
               </textarea>
-              : 'New' }
+              : 'Back' }
           </Card.Body>
         </Card>
         <div className="col-md-2">

@@ -42,25 +42,33 @@ export class _Quiz extends React.Component {
       const textBeingDisplayed = (
         flashcardBeingDisplayed.attributes[currentFlashcardVisibleSide].text);
 
-      return (
-        <div className="container">
+      return <div className="container">
           <div className="row">
             <div className="col-md-6 col-md-offset-3">
               <Card>
-                <Card.Body className="text-center" style={{ minHeight: 150 }}>
-                  { textBeingDisplayed }
+                <Card.Body style={{ minHeight: 150 }}>
+                  <Card.Text className="text-center" style={{ marginTop: "50px" }}>
+                    {textBeingDisplayed}
+                  </Card.Text>
                 </Card.Body>
               </Card>
-              <div class="text-center">
-                <Button bsStyle="default" onClick={ () => this.flipCard() }>Flip</Button>
-                <Button bsStyle="danger" onClick={ () => this.rateCard() }>:(</Button>
-                <Button bsStyle="default" onClick={ () => this.rateCard() }>-.-</Button>
-                <Button bsStyle="success" onClick={ () => this.rateCard() }>:)</Button>
+              <div className="text-center" style={{ marginTop: "40px" }}>
+                <Button bsStyle="default mr-3" style={{ padding: "10px 20px" }} onClick={() => this.flipCard()}>
+                  Flip
+                </Button>
+                <Button bsStyle="danger mr-3" style={{ padding: "10px 30px" }} onClick={() => this.rateCard()}>
+                  :(
+                </Button>
+                <Button bsStyle="primary mr-3" style={{ padding: "10px 30px" }} onClick={() => this.rateCard()}>
+                  -.-
+                </Button>
+                <Button bsStyle="success mr-3" style={{ padding: "10px 30px" }} onClick={() => this.rateCard()}>
+                  :)
+                </Button>
               </div>
             </div>
           </div>
-        </div>
-      );
+        </div>;
     } else if(isFinished) {
       return (
         <div className="gn-quiz-page">

@@ -34,34 +34,36 @@ export class _Navbar extends React.Component {
       registerModalShown
     } = this.state;
 
-    return (
-      <nav className="navbar navbar-expand-sm navbar-light container">
-        <Link className="navbar-brand" to="Home">Genieus</Link>
+    return <nav className="navbar navbar-expand-sm navbar-light container">
+        <Link className="navbar-brand" to="Home">
+          Genieus
+        </Link>
         <nav className="navbar-nav ml-auto">
-          {isLoggedIn
-            ? <a className="nav-link" href="#" onClick={this.handleLogout.bind(this)}>Logout</a>
-            : <button className="btn btn-primary"
-                      onClick={ () => { this.setState({ loginModalShown: true }) } }>
-                      Log In
+          {this.renderTakeQuizLink()}
+          {this.renderCollectionLink()}
+          {isLoggedIn ? <a className="nav-link" 
+                           href="#" 
+                           onClick={this.handleLogout.bind(this)}>Logout</a> 
+                      : <button className="btn mr-3" onClick={() => {this.setState({ loginModalShown: true })}} 
+                                style={loginBtnStyle} type="button">
+              Log In
             </button>}
-          { this.renderTakeQuizLink()}
-          { this.renderCollectionLink()}
-          {isLoggedIn
-            ? <a className="nav-link" href="#">({name}) My account</a>
-            : <button className="btn btn-light"
-                      onClick={ () => this.setState({ registerModalShown: true }) }
-                      type="button">
-                      Sign Up
-              </button>
-          }
-        </nav> 
+          {isLoggedIn ? <a className="nav-link" href="#">
+              ({name}) My account
+            </a> : <button className="btn" onClick={() => this.setState({
+                  registerModalShown: true
+                })} style={signUpBtnStyle} type="button">
+              Sign Up
+            </button>}
+        </nav>
 
-        <ModalSignUp show={ registerModalShown }
-                     onHide={ () => this.setState({ registerModalShown: false }) }/>
-        <ModalLogIn show={ loginModalShown }
-                    onHide={ () => this.setState({ loginModalShown: false }) }/>
-      </nav>
-    );
+        <ModalSignUp show={registerModalShown} onHide={() => this.setState({
+              registerModalShown: false
+            })} />
+        <ModalLogIn show={loginModalShown} onHide={() => this.setState({
+              loginModalShown: false
+            })} />
+      </nav>;
   }
 
   /* Handlers */
@@ -93,11 +95,14 @@ export class _Navbar extends React.Component {
 
 /* Styles */
 const loginBtnStyle = {
+  backgroundColor: "#AB2EE6",
   color: 'white'
 }
 
 const signUpBtnStyle = {
-  color: '#007bff'
+  color: "#AB2EE6",
+  backgroundColor: "white",
+  border: "1.4px solid #AB2EE6"
 }
 
 const mapStateToProps = state => {

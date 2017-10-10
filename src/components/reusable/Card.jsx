@@ -26,11 +26,56 @@ class CardBody extends React.Component {
   }
 }
 
+class CardHeader extends React.Component {
+  render() {
+    const classes = classnames({
+      [this.props.className || ""]: true,
+      "card-header": true
+    });
+
+    return (
+      <h4 className={classes} {..._.omit(this.props, "className")}>
+        {this.props.children}
+      </h4>
+    );
+  }
+}
+
+class CardFooter extends React.Component {
+  render() {
+    const classes = classnames({
+      [this.props.className || ""]: true,
+      'card-footer': true,
+    });
+
+    return (
+      <div className={classes} {..._.omit(this.props, "className")}>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+class CardText extends React.Component {
+  render() {
+    const classes = classnames({
+      [this.props.className || ""]: true,
+      'card-text': true
+    });
+
+    return (
+      <div className={classes} {..._.omit(this.props, "className")}>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
 class Card extends React.Component {
   render() {
     const classes = classnames({
       [this.props.className || '']: true,
-      'card': true
+      'card': true,
     });
 
     return (
@@ -43,5 +88,8 @@ class Card extends React.Component {
 
 Card.Body = CardBody;
 Card.Title = CardTitle;
+Card.Text = CardText;
+Card.Header = CardHeader;
+Card.Footer = CardFooter;
 
 export default Card;
