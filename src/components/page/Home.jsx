@@ -17,5 +17,5 @@ export default class Home extends React.Component {
 }
 
 const headerStyle = {
-  color: 'white'
+  color: "#AB2EE6"
 }
