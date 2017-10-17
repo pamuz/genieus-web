@@ -3,9 +3,10 @@ const API_BASE = 'http://localhost:5000';
 const INITIAL_STATE = {
   session: {
     isInRegisteringError: false,
-    isRegistering: false,
     isAuthenticating: false,
     isLoggedIn: false,
+    isLoggingIn: false,
+    isRegistering: false,
     error: undefined,
     data: {
       // email
