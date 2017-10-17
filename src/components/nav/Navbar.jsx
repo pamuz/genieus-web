@@ -27,6 +27,24 @@ export class _Navbar extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+
+    if (this.props.isLoggingIn !== nextProps.isLoggingIn &&
+        nextProps.isLoggingIn === false) {
+      this.setState({
+        loginModalShown: false
+      });
+    }
+
+    if (this.props.isRegistering !== nextProps.isRegistering &&
+        nextProps.isRegistering === false) {
+      this.setState({
+        registerModalShown: false
+      });
+    }
+  }
+
   render() {
     const { isLoggedIn, onLogout, name } = this.props;
     const {
@@ -106,11 +124,7 @@ const signUpBtnStyle = {
 }
 
 const mapStateToProps = state => {
-  return {
-    isLoggedIn: state.session.isLoggedIn,
-    isAuthenticating: state.session.isAuthenticating,
-    isInError: state.session.isInError
-  };
+  return state.session;
 };
 
 const mapDispatchToProps = dispatch => {

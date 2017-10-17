@@ -1,12 +1,12 @@
 version: '3'
 services:
   database:
-    image: pmunoz/genieus-db:develop
+    image: pmunoz/genieus-db:development
     ports:
       - 5432:5432
 
   api:
-    image: pmunoz/genieus-api:develop
+    image: pmunoz/genieus-api:development
     ports:
       - 5000:5000
     depends_on:

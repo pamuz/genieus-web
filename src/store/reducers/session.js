@@ -15,6 +15,7 @@ export default function session(state=initialState, action) {
     case actionType('startCreateSession'):
       return Object.assign({}, state, {
         isAuthenticating: true,
+        isLoggingIn: true
       });
       break;
 
@@ -28,6 +29,7 @@ export default function session(state=initialState, action) {
         isAuthenticating: false,
         isInError: false,
         isLoggedIn: true,
+        isLoggingIn: false,
         data: sessionAttributes,
       });
       break;

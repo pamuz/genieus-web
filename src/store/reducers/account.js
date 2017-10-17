@@ -5,6 +5,7 @@ export default function account(state=INITIAL_STATE.session, action) {
   switch(action.type) {
     case actionType('startCreateSession'):
       return Object.assign({}, state, {
+        isLoggingIn: true,
         isAuthenticating: true,
       });
       break;
@@ -14,6 +15,8 @@ export default function account(state=INITIAL_STATE.session, action) {
         isAuthenticating: false,
         isInError: false,
         isLoggedIn: true,
+        isLoggingIn: false,
+        isRegistering: false,
         data: {
           email: action.email,
           name: action.name,
