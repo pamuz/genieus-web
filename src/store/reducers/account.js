@@ -34,15 +34,6 @@ export default function account(state=INITIAL_STATE.session, action) {
       });
       break;
 
-    case 'LOGOUT':
-      return Object.assign({}, state, {
-        isAuthenticating: false,
-        isInError: false,
-        isLoggedIn: false,
-        data: {},
-      });
-      break;
-
     case actionType('startCreateAccount'):
       return Object.assign({}, state, {
         isRegistering: true,
