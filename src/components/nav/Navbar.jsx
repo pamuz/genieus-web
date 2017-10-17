@@ -57,8 +57,9 @@ export class _Navbar extends React.Component {
           Genieus
         </Link>
         <nav className="navbar-nav ml-auto">
-          {this.renderTakeQuizLink()}
-          {this.renderCollectionLink()}
+          {this.renderLink({ requiresLogin: true, to: 'Quiz', text: 'Quiz' })}
+          {this.renderLink({ requiresLogin: false, to: 'Collection', text: 'Collection' })}
+          {this.renderLink({ requiresLogin: false, to: 'Community', text: 'Community' })}
           {isLoggedIn ? <a className="nav-link" 
                            href="#" 
                            onClick={this.handleLogout.bind(this)}>Logout</a> 
@@ -92,22 +93,16 @@ export class _Navbar extends React.Component {
     onLogout();
   }
 
-  renderTakeQuizLink() {
-    if (this.props.isLoggedIn) {
-      return (
-        <Link className="nav-link" to="Quiz">Take quiz</Link>
-      );
-    }
-    return null;
-  }
+  renderLink(options) {
+    const { to, text, requiresLogin } = options;
 
-  renderCollectionLink() {
-    if (this.props.isLoggedIn) {
-      return (
-        <Link className="nav-link" to="Collection">Collection</Link>
-      );
+    if (requiresLogin && !this.props.isLoggedIn) {
+      return null;
     }
-    return null;
+
+    return (
+      <Link className="nav-link" to={to}>{ text }</Link>
+    );
   }
 }
 
