@@ -14,6 +14,7 @@ import Home from "./components/page/Home.jsx";
 import Quiz from "./components/page/Quiz.jsx";
 import Collection from "./components/page/Collection.jsx";
 import Deck from "./components/page/Deck.jsx";
+import Community from "./components/page/Community.jsx";
 
 import { store } from "./store/index.js";
 
@@ -63,6 +64,14 @@ const routes = [
           include: 'flashcard'
         }
       }));
+    }
+  },
+  {
+    name: "Community",
+    path: "community",
+    body: () => Community,
+    load: (params, modifiers) => {
+      return store.dispatch(action('attemptListDecks')({}));
     }
   }
 ];

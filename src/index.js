@@ -33,8 +33,10 @@ ReactDOM.render((
               </div>
             );
           }
+
+          const { location, params } = response;
           return response.body
-               ? (<div className="container"><Navbar /><response.body /></div>)
+               ? (<div className="container"><Navbar /><response.body params={params} history={config.history} location={location} /></div>)
                : <p>404</p>;
       }}>
     </Navigator>
