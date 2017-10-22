@@ -46,7 +46,7 @@ export class _Quiz extends React.Component {
           <div className="row">
             <div className="col-md-6 col-md-offset-3">
               <Card>
-                <Card.Body style={{ minHeight: 150 }}>
+                <Card.Body style={{ minHeight: 150, fontSize: '20px' }}>
                   <Card.Text className="text-center" style={{ marginTop: "50px" }}>
                     {textBeingDisplayed}
                   </Card.Text>

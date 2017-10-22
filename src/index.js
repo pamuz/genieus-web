@@ -16,9 +16,17 @@ import { Browser } from 'hickory';
 import { routes } from './routes.jsx';
 import { store } from './store/index.js';
 import Navbar from './components/nav/Navbar.jsx'
+import createQueryMiddleware from 'curi-middleware-query';
+import { parse, stringify } from 'qs';
 
-const browserHistory = Browser();
-const config = createConfig(browserHistory, routes);
+const queryMiddleware = createQueryMiddleware(parse);
+
+const browserHistory = Browser({
+  query: { parse, stringify }
+});
+const config = createConfig(browserHistory, routes, {
+  middleware: [queryMiddleware]
+});
 
 ReactDOM.render((
   <Provider store={store}>

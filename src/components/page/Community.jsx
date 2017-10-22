@@ -8,9 +8,19 @@
  * temporary while an endpoint for this is created.
  */
 
+import _ from 'lodash';
 import React from 'react';
 
 import { connect } from 'react-redux';
+
+import Deck from '../reusable/Deck.jsx';
+import Button from '../reusable/Button.jsx';
+import { action } from '../../store/actions/api.js';
+
+const API_ACTIONS = [
+  'searchPublicDecks',
+  'attemptAddPublicDeckToUserCollection'
+];
 
 export class _Community extends React.Component {
   constructor(props) {
@@ -31,11 +41,21 @@ export class _Community extends React.Component {
           </div>
         </form>
         <ul>
-        { decks.map( oneDeck => {
-            return (
-                <li key={ oneDeck.id }>{ oneDeck.attributes.name }</li>
-            );
-        }) }
+      { _.chunk(decks, 2).map( (deckRow, i) => (
+        <div key={i} className="row">
+          { deckRow.map( oneDeck => (
+            <div className="col-md-4">
+              <Deck key={ oneDeck.id } attributes={ oneDeck.attributes }></Deck>
+              <Button
+                onClick={ () => this.addPublicDeckToUserCollection(oneDeck.id) }
+                style={{
+                  color: oneDeck.attributes.color
+                }}>Add to collection</Button>
+            </div>
+          ) ) }
+        </div>
+      ) ) }
+      
         </ul>
       </div>
     );
@@ -47,14 +67,32 @@ export class _Community extends React.Component {
     const search = $(this.searchInput).val();
     history.replace(`/community?q=${encodeURIComponent(search)}`);
   }
+
+  addPublicDeckToUserCollection(deckId) {
+    console.log(this.props);
+
+    this.props.attemptAddPublicDeckToUserCollection({
+      payload: {
+        id: deckId
+      }
+    });
+  }
 }
 
 const mapStateToProps = state => {
-  return state.collection;
+  return state.community;
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  const mapper = {};
+
+  API_ACTIONS.forEach( actionName => {
+    mapper[actionName] = (options) => {
+      dispatch(action(actionName)(options));
+    }
+  });
+
+  return mapper;
 };
 
 const Community = connect(

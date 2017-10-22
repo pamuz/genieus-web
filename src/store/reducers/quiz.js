@@ -5,22 +5,27 @@ export default function account(state=INITIAL_STATE.quiz, action) {
   switch(action.type) {
 
     case actionType('startRetrieveQuizFlashcards'):
+    case actionType('startRetrieveQuizOfDeckFlashcards'):
       return Object.assign({}, state, {
         isLoading: true,
       });
       break;
 
     case actionType('doneRetrieveQuizFlashcards'):
+    case actionType('doneRetrieveQuizOfDeckFlashcards'):
+      console.log(action);
       return Object.assign({}, state, {
         isLoading: false,
         isInError: false,
         isReady: true,
+        isFinished: false,
         flashcards: action.response.data,
         currentFlashcardIndex: 0
       });
       break;
 
     case actionType('failRetrieveQuizFlashcards'):
+    case actionType('failRetrieveQuizOfDeckFlashcards'):
       return Object.assign({}, state, {
         isLoading: false,
         isInError: true,

@@ -16,7 +16,7 @@ import Modal from '../reusable/Modal.jsx';
 import Button from '../reusable/Button.jsx';
 import Card from '../reusable/Card.jsx';
 
-const API_ACTIONS = ['attemptCreateDeck', 'attemptDeleteDeck'];
+const API_ACTIONS = ['attemptCreateDeck', 'attemptDeleteDeck', 'attemptPatchDeck'];
 
 function makeDeckCardStyle(deck) {
   return {
@@ -101,13 +101,22 @@ export class _Collection extends React.Component {
               <Card.Footer style={{backgroundColor:'transparent', border:"transparent"}}>
               <div className="row justify-content-end">
                 <Link className="btn mr-3" style={{backgroundColor: deck.attributes.color, color: 'white'}}
+                      to="QuizOfDeck" params={{ id: deck.id }}>
+                  Quiz
+                </Link>
+                <Link className="btn mr-3" style={{backgroundColor: deck.attributes.color, color: 'white'}}
                       to="Deck" params={{ deckId: deck.id }}>
                   Detail
                 </Link>
-                <Button className= "mr-3" style={{color: deck.attributes.color , backgroundColor: "white", 
+                <Button className="mr-3" style={{color: deck.attributes.color , backgroundColor: "white", 
                                                   border: "1.5px solid",
                                                   borderColor: deck.attributes.color}} onClick={() => this.attemptDeleteDeck(deck.id)}>
                   X
+                </Button>
+<Button className="mr-3" style={{color: deck.attributes.color , backgroundColor: "white", 
+                                                  border: "1.5px solid",
+                                                  borderColor: deck.attributes.color}} onClick={() => this.attemptMarkDeckAsPublic(deck)}>
+  Make public
                 </Button>
               </div>
               </Card.Footer>
@@ -134,6 +143,22 @@ export class _Collection extends React.Component {
     this.props.attemptDeleteDeck({
       pathSubstitutions: {
         id: deckId
+      }
+    });
+  }
+
+  attemptMarkDeckAsPublic(deck) {
+    console.log(deck);
+
+    this.props.attemptPatchDeck({
+      pathSubstitutions: {
+        id: deck.id,
+      },
+      payload: {
+        data: {
+          type: "deck",
+          attributes: Object.assign({}, deck.attributes, { is_public: 1 })
+        }
       }
     });
   }

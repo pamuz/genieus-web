@@ -24,11 +24,35 @@ import { getDeckDetailAttempt, } from "./store/actions/deck-detail.js";
 
 import { action } from "./store/actions/api.js";
 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 const routes = [
   {
     name: "Home",
     path: "", // matches /
     body: () => Home
+  },
+  {
+    name: "QuizOfDeck",
+    path: "quiz/:id",
+    body: () => Quiz,
+    load: (params, modifiers) => {
+      const id = params.id;
+
+      return store.dispatch(action('attemptRetrieveQuizOfDeckFlashcards')({
+        pathSubstitutions: {
+          id,
+        }
+      }));
+    }
   },
   {
     name: "Quiz",
@@ -71,7 +95,14 @@ const routes = [
     path: "community",
     body: () => Community,
     load: (params, modifiers) => {
-      return store.dispatch(action('attemptListDecks')({}));
+      const q = getParameterByName('q');
+      console.log('q: ' + q);
+
+      return store.dispatch(action('attemptSearchPublicDecks')({
+        query: {
+          q
+        }
+      }));
     }
   }
 ];
