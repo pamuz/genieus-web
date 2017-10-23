@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 
-const host = 'http://localhost:5000';
+const host = 'http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000';
 const basePath = '';
 const apiBase = host + basePath;
 
@@ -11,7 +11,7 @@ const actions = {};
 
 $.ajax({
   method: 'GET',
-  url: 'http://localhost:5000/swagger',
+  url: 'http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/swagger',
 }).done((data, status, xhr) => {
   parseSwagger(data);
 }).fail((xhr, status, error) => {

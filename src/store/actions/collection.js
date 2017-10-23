@@ -35,7 +35,7 @@ export function getAllDecksAttempt(jsonWebToken) {
 
     $.ajax({
       method: "GET",
-      url: "http://localhost:5000/api/v0/deck",
+      url: "http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/api/v0/deck",
       beforeSend: request => {
         request.setRequestHeader("Authorization", "Bearer " + jsonWebToken);
       }
@@ -73,7 +73,7 @@ export function createDeckAttempt(attributes) {
 
     $.ajax({
       method: "POST",
-      url: "http://localhost:5000/api/v0/deck",
+      url: "http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/api/v0/deck",
       contentType: "application/json",
       data: JSON.stringify({
         "data": {
@@ -128,7 +128,7 @@ export function deleteDeckAttempt(deckId) {
 
     $.ajax({
       method: 'DELETE',
-      url: `http://localhost:5000/api/v0/deck/${deckId}`,
+      url: `http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/api/v0/deck/${deckId}`,
       beforeSend: request => {
         request.setRequestHeader("Authorization", "Bearer " + getJSONWebToken())
       }

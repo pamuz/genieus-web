@@ -34,7 +34,7 @@ export function getDeckDetailAttempt(jsonWebToken, deckId) {
 
     $.ajax({
       method: "GET",
-      url: `http://localhost:5000/api/v0/deck/${deckId}?include=flashcard`,
+      url: `http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/api/v0/deck/${deckId}?include=flashcard`,
       beforeSend: request => {
         request.setRequestHeader("Authorization", "Bearer " + jsonWebToken);
       }
@@ -62,7 +62,7 @@ export function createFlashcardAttempt(attributes) {
 
     $.ajax({
       method: "POST",
-      url: "http://localhost:5000/api/v0/flashcard",
+      url: "http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/api/v0/flashcard",
       contentType: "application/json",
       data: JSON.stringify({
         "data": {
@@ -100,7 +100,7 @@ export function deleteFlashcardAttempt(flashcardData) {
 
     $.ajax({
       method: "DELETE",
-      url: `http://localhost:5000/api/v0/flashcard/${flashcardId}`,
+      url: `http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/api/v0/flashcard/${flashcardId}`,
       beforeSend: request => {
         request.setRequestHeader("Authorization", "Bearer " + getJSONWebToken());
       }
@@ -131,7 +131,7 @@ export function updateFlashcardAttempt(attributes) {
 
     $.ajax({
       method: "PUT",
-      url: `http://localhost:5000/api/v0/flashcard/${flashcardId}`,
+      url: `http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/api/v0/flashcard/${flashcardId}`,
       contentType: 'application/json',
       data: JSON.stringify({
         "data": {

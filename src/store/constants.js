@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000';
+const API_BASE = 'http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000';
 
 const INITIAL_STATE = {
   session: {

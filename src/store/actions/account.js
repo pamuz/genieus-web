@@ -42,7 +42,7 @@ export function attemptLogin(email, password) {
   return dispatch => {
     dispatch(loginInitiated());
 
-    $.ajax('http://localhost:5000/api/v0/account/authenticate', {
+    $.ajax('http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/api/v0/account/authenticate', {
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({
@@ -102,7 +102,7 @@ export function attemptRegistration(email, password, passwordConf) {
   return dispatch => {
     dispatch(registrationInitiated());
     
-    $.ajax('http://localhost:5000/api/v0/account', {
+    $.ajax('http://ec2-34-216-13-174.us-west-2.compute.amazonaws.com:5000/api/v0/account', {
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({
