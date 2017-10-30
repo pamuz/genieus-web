@@ -39,6 +39,7 @@ export class _Collection extends React.Component {
 
     // Closure for inner class
     const attemptDeleteDeck = this.attemptDeleteDeck.bind(this);
+    const attemptMarkDeckAsPublic = this.attemptMarkDeckAsPublic.bind(this);
 
     this.DeckComponent = createReactClass({
       getDefaultProps() {
@@ -60,6 +61,10 @@ export class _Collection extends React.Component {
                   params={{ deckId: data.id }}>
               <span className="fa fa-trophy"></span>&nbsp;Take quiz
             </Link>
+            <Button className="btn btn-white btn-xs"
+                    onClick={ () => attemptMarkDeckAsPublic(data) }>
+              <span className="fa fa-users"></span>&nbsp;Make public
+            </Button>
             <Button className="btn btn-danger btn-xs"
                     onClick={ () => attemptDeleteDeck(data.id) }>
               <span className="fa fa-trash-o"></span>&nbsp;Delete
@@ -106,7 +111,17 @@ export class _Collection extends React.Component {
                          },
                          {
                            name: "color",
-                           type: "text",
+                           type: "select",
+                           spec: [
+                             { value: "red", label: "Red" },
+                             { value: "orange", label: "Orange" },
+                             { value: "yellow", label: "Yellow" },
+                             { value: "green", label: "Green" },
+                             { value: "blue", label: "Blue" },
+                             { value: "indigo", label: "Indigo" },
+                             { value: "violet", label: "Violet" },
+                             { value: "black", label: "Black" },
+                           ],
                            label: "Color"
                          }]} />
           </Modal.Body>

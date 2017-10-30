@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import Form, { FormInput } from './Form.jsx';
+import Form from './Form.jsx';
 
 export default class SmartForm extends React.Component {
   render() {
@@ -16,10 +16,18 @@ export default class SmartForm extends React.Component {
       let element = null;
 
       switch(item.type) {
+        case 'select':
+          element = (
+            <Form.Select key={ item.name }
+                         spec={ item.spec }
+                         ref={ input => this[item.name + 'Input'] = input } />
+          );
+          break;
+          
         default:
           // The default is a normal text input
           element = (
-            <FormInput { ...item }
+            <Form.Input { ...item }
                        key={ item.name }
                        ref={ input => this[item.name + 'Input'] = input } />
           );
