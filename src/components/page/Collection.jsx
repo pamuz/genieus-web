@@ -6,6 +6,7 @@
 
 import _ from 'lodash';
 import React from 'react';
+import createReactClass from 'create-react-class';
 
 import { Link } from '@curi/react';
 
@@ -14,7 +15,10 @@ import { action } from '../../store/actions/api.js';
 import SmartForm from '../reusable/SmartForm.jsx';
 import Modal from '../reusable/Modal.jsx';
 import Button from '../reusable/Button.jsx';
+import ButtonRow from '../reusable/Button.jsx';
 import Card from '../reusable/Card.jsx';
+import Panel from '../reusable/Panel.jsx';
+import Deck from '../reusable/Deck2.jsx';
 
 const API_ACTIONS = ['attemptCreateDeck', 'attemptDeleteDeck', 'attemptPatchDeck'];
 
@@ -28,9 +32,46 @@ function makeDeckCardStyle(deck) {
 export class _Collection extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       createDeckModalShown: false
     };
+
+    // Closure for inner class
+    const attemptDeleteDeck = this.attemptDeleteDeck.bind(this);
+
+    this.DeckComponent = createReactClass({
+      getDefaultProps() {
+        return {
+          data: {}
+        }
+      },
+
+      render() {
+        const { data } = this.props;
+
+        const DeckFooter = (
+          <div className="btn-group">
+            <Link className="btn btn-white btn-xs" to="DeckDetail"
+                  params={{ deckId: data.id }}>
+              <span className="fa fa-edit"></span>&nbsp;Edit
+            </Link>
+            <Link className="btn btn-white btn-xs" to="QuizOfDeck"
+                  params={{ deckId: data.id }}>
+              <span className="fa fa-trophy"></span>&nbsp;Take quiz
+            </Link>
+            <Button className="btn btn-danger btn-xs"
+                    onClick={ () => attemptDeleteDeck(data.id) }>
+              <span className="fa fa-trash-o"></span>&nbsp;Delete
+            </Button>
+          </div>
+        );
+
+        return (
+          <Deck footer={ DeckFooter } { ...this.props }></Deck>
+        );
+      }
+    });
   }
 
   render() {
@@ -45,84 +86,63 @@ export class _Collection extends React.Component {
 
     const allDecks = this.props.decks;
 
-    return <div>
-        <h1>Deck collection</h1>
-
+    return (
+      <div>
         {/* A modal with a form to create a new deck */}
-        <Modal show={createDeckModalShown} onHide={() => this.setState({
-              createDeckModalShown: false
-            })}>
-          <Modal.Header style={modalHeaderStyle}>
+        <Modal bsSize="small"
+               show={createDeckModalShown} onHide={() => this.setState({
+                   createDeckModalShown: false
+               })}>
+          <Modal.Header>
             <Modal.Title>Create Deck</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="row justify-content-center">
-              <div className="col-sm-8">
-                <SmartForm ref={form => (this.createDeckForm = form)} spec={[{ name: "name", type: "text", label: "Name" }, { name: "color", type: "text", label: "Color" }]} />
-              </div>
-            </div>
+            <SmartForm ref={form => (this.createDeckForm = form)}
+                       spec={[
+                         {
+                           name: "name",
+                           type: "text",
+                           label: "Name"
+                         },
+                         {
+                           name: "color",
+                           type: "text",
+                           label: "Color"
+                         }]} />
           </Modal.Body>
           <Modal.Footer>
-            <Button style={{ backgroundColor: "#AB2EE6", color: "white" }} onClick={() => this.attemptCreateDeck()}>
+            <div className="btn-group">
+            <Button bsStyle="primary" onClick={() => this.attemptCreateDeck()}>
               Create
             </Button>
-            <Button style={cancelBtnStyle} >Cancel</Button>
+            <Button bsStyle="danger">Cancel</Button>
+</div>
           </Modal.Footer>
         </Modal>
 
-        <Button style={{display:"block", marginBottom:"20px"}}bsStyle="success" onClick={() => this.setState({
-              createDeckModalShown: true
-            })}>
-          +
-        </Button>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="btn-group">
+              <Button bsStyle="primary" onClick={() => this.setState({
+                  createDeckModalShown: true
+              })}>
+                +
+              </Button>
+            </div>
+          </div>
+        </div>
 
-        {allDecks.map(deck => {
-          return <Card style={{ border: "1.5px solid", 
-                                borderColor: deck.attributes.color, 
-                                width:"30rem",
-                                display: "inline-flex",
-                                marginRight: "50px",
-                                marginBottom: "50px"}}>
-              <Card.Header style={{ backgroundColor: deck.attributes.color, 
-                                    marginTop: "0px", 
-                                    color: "white" }}>
-                {deck.attributes.name}
-              </Card.Header>
-              <Card.Body>
-                <Card.Title>{deck.attributes.name}</Card.Title>
-                <Card.Text>
-                  Lorem ipsum dolor sit amet consectetur adipisicing
-                  elit. Perferendis ex quibusdam quos sed.
-                  Perferendis, quo sequi praesentium illo quidem
-                  tempore deserunt neque reiciendis, id, fugiat
-                  dignissimos omnis optio explicabo beatae.
-                </Card.Text>
-              </Card.Body>
-              <Card.Footer style={{backgroundColor:'transparent', border:"transparent"}}>
-              <div className="row justify-content-end">
-                <Link className="btn mr-3" style={{backgroundColor: deck.attributes.color, color: 'white'}}
-                      to="QuizOfDeck" params={{ id: deck.id }}>
-                  Quiz
-                </Link>
-                <Link className="btn mr-3" style={{backgroundColor: deck.attributes.color, color: 'white'}}
-                      to="Deck" params={{ deckId: deck.id }}>
-                  Detail
-                </Link>
-                <Button className="mr-3" style={{color: deck.attributes.color , backgroundColor: "white", 
-                                                  border: "1.5px solid",
-                                                  borderColor: deck.attributes.color}} onClick={() => this.attemptDeleteDeck(deck.id)}>
-                  X
-                </Button>
-<Button className="mr-3" style={{color: deck.attributes.color , backgroundColor: "white", 
-                                                  border: "1.5px solid",
-                                                  borderColor: deck.attributes.color}} onClick={() => this.attemptMarkDeckAsPublic(deck)}>
-  Make public
-                </Button>
+        <div style={{ marginTop: "25px" }}>
+          <div className="row">
+            { allDecks.map( (aDeck) => (
+              <div key={ aDeck.id } className="col-md-4">
+                <this.DeckComponent data={ aDeck } />
               </div>
-              </Card.Footer>
-            </Card>;
-        })}
-      </div>;
+            )) }
+          </div>
+        </div>
+      </div>
+    );
   }
 
   attemptCreateDeck() {
@@ -139,7 +159,6 @@ export class _Collection extends React.Component {
   }
 
   attemptDeleteDeck(deckId) {
-    event.preventDefault();
     this.props.attemptDeleteDeck({
       pathSubstitutions: {
         id: deckId
@@ -148,8 +167,6 @@ export class _Collection extends React.Component {
   }
 
   attemptMarkDeckAsPublic(deck) {
-    console.log(deck);
-
     this.props.attemptPatchDeck({
       pathSubstitutions: {
         id: deck.id,

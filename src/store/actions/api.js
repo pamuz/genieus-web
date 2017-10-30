@@ -9,20 +9,23 @@ const apiBase = host + basePath;
 const types = {};
 const actions = {};
 
-$.ajax({
-  method: 'GET',
-  url: 'http://localhost:5000/swagger',
-}).done((data, status, xhr) => {
-  parseSwagger(data);
-}).fail((xhr, status, error) => {
-  console.log(xhr);
-  console.log(status);
-  console.log(error);
-});
-
 const supportedMethods = ['get', 'post', 'patch', 'delete'];
 
-function parseSwagger(swaggerData) {
+export function init(callback) {
+  $.ajax({
+    method: 'GET',
+    url: 'http://localhost:5000/swagger',
+  }).done((data, status, xhr) => {
+    parseSwagger(data, callback);
+  }).fail((xhr, status, error) => {
+    console.log(xhr);
+    console.log(status);
+    console.log(error);
+    callback();
+  });
+}
+
+function parseSwagger(swaggerData, callback) {
   _.forEach(swaggerData.paths, (path, pathName) => {
     _.forEach(supportedMethods, (methodName) => {
       const method = path[methodName];
@@ -131,6 +134,7 @@ function parseSwagger(swaggerData) {
   });
 
   console.log(Object.keys(actions));
+  callback();
 }
 
 export function actionType(actionName) {

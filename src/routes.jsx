@@ -13,7 +13,7 @@
 import Home from "./components/page/Home.jsx";
 import Quiz from "./components/page/Quiz.jsx";
 import Collection from "./components/page/Collection.jsx";
-import Deck from "./components/page/Deck.jsx";
+import DeckDetail from "./components/page/DeckDetail.jsx";
 import Community from "./components/page/Community.jsx";
 
 import { store } from "./store/index.js";
@@ -37,15 +37,17 @@ function getParameterByName(name, url) {
 const routes = [
   {
     name: "Home",
+    title: "Genieus",
     path: "", // matches /
     body: () => Home
   },
   {
     name: "QuizOfDeck",
-    path: "quiz/:id",
+    path: "quiz/:deckId",
+    title: "Quiz",
     body: () => Quiz,
     load: (params, modifiers) => {
-      const id = params.id;
+      const id = params.deckId;
 
       return store.dispatch(action('attemptRetrieveQuizOfDeckFlashcards')({
         pathSubstitutions: {
@@ -57,6 +59,7 @@ const routes = [
   {
     name: "Quiz",
     path: "quiz",
+    title: "Quiz",
     body: () => Quiz,
     load: (params, modifiers) => {
       return store.dispatch(action('attemptRetrieveQuizFlashcards')({
@@ -69,6 +72,7 @@ const routes = [
   {
     name: "Collection",
     path: "collection",
+    title: "Collection",
     body: () => Collection,
     load: (params, modifiers) => {
       console.log(action);
@@ -76,9 +80,10 @@ const routes = [
     }
   },
   {
-    name: "Deck",
+    name: "DeckDetail",
     path: "deck/:deckId",
-    body: () => Deck,
+    title: "Deck Detail",
+    body: () => DeckDetail,
     load: (params, modifiers) => {
       return store.dispatch(action('attemptRetrieveDeck')({
         pathSubstitutions: {
@@ -93,6 +98,7 @@ const routes = [
   {
     name: "Community",
     path: "community",
+    title: "Community",
     body: () => Community,
     load: (params, modifiers) => {
       const q = getParameterByName('q');

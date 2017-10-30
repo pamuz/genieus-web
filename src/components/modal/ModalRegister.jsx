@@ -22,24 +22,38 @@ class _ModalLogIn extends React.Component {
       isInRegisteringError
     } = this.props;
 
-    return <Modal ref={modal => (this.modal = modal)} {..._.omit(this.props, STATE_TO_PROPS_KEYS)}>
-        <Modal.Header style={ modalHeaderStyle }>
+    return <Modal ref={modal => (this.modal = modal)} bsSize="small"
+                  {..._.omit(this.props, STATE_TO_PROPS_KEYS)}>
+        <Modal.Header>
           <Modal.Title>
             Register
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="row justify-content-center">
-            <div className="col-sm-8">
-              <SmartForm ref={form => (this.registerForm = form)} spec={[{ name: "email", label: "Email", type: "text", placeholder: "@itesm.mx" }, { name: "password", label: "Password", type: "password" }, { name: "passwordConfirmation", label: "Password Confirmation", type: "password" }]} />
-            </div>
-          </div>
+          <SmartForm ref={form => (this.registerForm = form)}
+                     spec={[
+                       {
+                         name: "email",
+                         label: "Email",
+                         type: "text",
+                         placeholder: "@itesm.mx"
+                       },
+                       {
+                         name: "password",
+                         label: "Password",
+                         type: "password"
+                       },
+                       {
+                         name: "passwordConfirmation",
+                         label: "Password Confirmation",
+                         type: "password"
+                       }]} />
         </Modal.Body>
         <Modal.Footer>
-          <Button style={ {backgroundColor: "#AB2EE6", color: 'white' } }  onClick={this.handleRegisterBtnClick.bind(this)}>
+          <Button bsStyle="primary" onClick={ this.handleRegisterBtnClick.bind(this) }>
             Register
           </Button>
-          <Button style={ cancelBtnStyle }>Cancel</Button>
+          <Button bsStyle="danger">Cancel</Button>
         </Modal.Footer>
       </Modal>;
   }
@@ -63,18 +77,6 @@ class _ModalLogIn extends React.Component {
     this.modal.show();
   }
 }
-
-/* Styles */
-const modalHeaderStyle = {
-   backgroundColor: "#AB2EE6",
-   color: 'white' 
-}
-
-const cancelBtnStyle = {
-  color: "#AB2EE6",
-  backgroundColor: "white",
-  border: "1.4px solid #AB2EE6"
-};
 
 function mapStateToProps(state) {
   return {

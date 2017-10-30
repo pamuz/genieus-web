@@ -15,7 +15,4 @@ let store = createStore(
 );
 
 
-export function getJSONWebToken() {
-}
-
 export { store };
