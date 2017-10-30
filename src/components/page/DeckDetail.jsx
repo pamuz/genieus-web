@@ -8,6 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { action } from '../../store/actions/api.js';
 import Card from '../reusable/Card.jsx';
+import Panel from '../reusable/Panel.jsx';
 import Button from '../reusable/Button.jsx';
 
 const SPECIAL_NEW_FLASHCARD_ID = 'special';
@@ -58,14 +59,10 @@ export class _Deck extends React.Component {
     return (
       <div>
         <h1 style={{ color: deck.attributes.color }}>{ deck.attributes.name }</h1>
+        { flashcards.map(this.renderFlashcard.bind(this)) }
 
-        <div className="container">
-          { flashcards.map(this.renderFlashcard.bind(this)) }
-
-          {/* A special "flashcard" that can be used to create new flashcards */}
-          { this.renderSpecialCreateFlashcard() }
-        </div>
-
+        {/* A special "flashcard" that can be used to create new flashcards */}
+        { this.renderSpecialCreateFlashcard() }
       </div>
     );
   }
@@ -139,39 +136,48 @@ export class _Deck extends React.Component {
     const backText = flashcard.attributes.back.text;
 
     return (
-      <div className="row justify-content-around" key={ flashcard.id } style={{ marginTop: 15 }}>
-        <Card className="col-md-4">
-          <Card.Body>
-            { isBeingEdited
-              ? <textarea
-                  className="form-control" rows="2"
-                  ref={ textarea =>
-                    this.flashcardBeingEditedFrontTextarea = textarea }
-                  defaultValue={ frontText }></textarea>
-              : frontText }
-          </Card.Body>
-        </Card>
-        <Card className="col-md-4">
-          <Card.Body>
-            { isBeingEdited
-              ? <textarea
-                  className="form-control" rows="2"
-                  ref={ textarea =>
-                    this.flashcardBeingEditedBackTextarea = textarea }
-                  defaultValue={ backText }></textarea>
-              : backText }
-          </Card.Body>
-        </Card>
-        <div className="col-md-2">
+      <div className="row" key={ flashcard.id } style={{}}>
+        <div className="col-md-4">
+          <Panel>
+            <Panel.Body>
+              { isBeingEdited
+                ? <textarea
+                    className="form-control" rows="2"
+                    ref={ textarea =>
+                      this.flashcardBeingEditedFrontTextarea = textarea }
+                    defaultValue={ frontText }></textarea>
+                : frontText }
+            </Panel.Body>
+          </Panel>
+        </div>
+        <div className="col-md-4">
+          <Panel>
+            <Panel.Body>
+              { isBeingEdited
+                ? <textarea
+                    className="form-control" rows="2"
+                    ref={ textarea =>
+                      this.flashcardBeingEditedBackTextarea = textarea }
+                    defaultValue={ backText }></textarea>
+                : backText }
+            </Panel.Body>
+          </Panel>
+        </div>
+        <div className="btn-group col-md-2">
           <Button
+            bsStyle="white"
             onClick={ firstButtonAction }>
-            { isBeingEdited ? 'S' : 'E' }
+            { isBeingEdited ? <span className="fa fa-save"></span> : <span className="fa fa-edit"></span> }
           </Button>
-          <Button onClick={
+          <Button
+            bsStyle="danger"
+            onClick={
             () => {
               this.props.attemptDeleteFlashcard({
                 pathSubstitutions: { id: flashcard.id }
-              })}} >X</Button>
+              })}}>
+            <span className="fa fa-trash-o"></span>
+          </Button>
         </div>
       </div>
     );
@@ -189,32 +195,37 @@ export class _Deck extends React.Component {
 
     return (
       <div className="row justify-content-around" style={{ marginTop: 15 }}>
-        <Card className="col-md-4">
-          <Card.Body>
-            { isBeingEdited
-              ? <textarea
-                  className="form-control" rows="2"
-                  ref={ textarea =>
-                    this.flashcardBeingEditedFrontTextarea = textarea } >
-              </textarea>
-              : 'Front' }
-          </Card.Body>
-        </Card>
-        <Card className="col-md-4">
-          <Card.Body>
-            { isBeingEdited
-              ? <textarea
-                  className="form-control" rows="2"
-                  ref={ textarea =>
-                    this.flashcardBeingEditedBackTextarea = textarea } >
-              </textarea>
-              : 'Back' }
-          </Card.Body>
-        </Card>
+        <div className="col-md-4">
+          <Panel>
+            <Panel.Body>
+              { isBeingEdited
+                ? <textarea
+                    className="form-control" rows="2"
+                    ref={ textarea =>
+                      this.flashcardBeingEditedFrontTextarea = textarea } >
+                </textarea>
+                : 'Front' }
+            </Panel.Body>
+          </Panel>
+        </div>
+        <div className="col-md-4">
+          <Panel>
+            <Panel.Body>
+              { isBeingEdited
+                ? <textarea
+                    className="form-control" rows="2"
+                    ref={ textarea =>
+                      this.flashcardBeingEditedBackTextarea = textarea } >
+                </textarea>
+                : 'Back' }
+            </Panel.Body>
+          </Panel>
+        </div>
         <div className="col-md-2">
           <Button
+            bsStyle="white"
             onClick={ firstButtonAction }>
-            { isBeingEdited ? 'S' : 'E' }
+            { isBeingEdited ? <span className="fa fa-save"></span> : <span className="fa fa-edit"></span> }
           </Button>
         </div>
       </div>
@@ -246,9 +257,9 @@ function mapDispatchToProps(dispatch) {
   return mapper;
 }
 
-const Deck = connect(
+const DeckDetail = connect(
   mapStateToProps,
   mapDispatchToProps
 )(_Deck);
 
-export default Deck;
+export default DeckDetail;

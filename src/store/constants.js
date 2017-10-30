@@ -36,6 +36,13 @@ const INITIAL_STATE = {
     isReady: false,
     isInError: false,
     isFinished: false
+  },
+
+  community: {
+    decks: [],
+    isFetching: false,
+    isInError: false,
+    error: {}
   }
 };
 

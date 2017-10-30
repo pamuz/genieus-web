@@ -7,7 +7,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import Card from '../reusable/Card.jsx';
+import Panel from '../reusable/Panel.jsx';
 import Button from '../reusable/Button.jsx';
 
 export class _Quiz extends React.Component {
@@ -43,32 +43,37 @@ export class _Quiz extends React.Component {
         flashcardBeingDisplayed.attributes[currentFlashcardVisibleSide].text);
 
       return <div className="container">
-          <div className="row">
-            <div className="col-md-6 col-md-offset-3">
-              <Card>
-                <Card.Body style={{ minHeight: 150 }}>
-                  <Card.Text className="text-center" style={{ marginTop: "50px" }}>
-                    {textBeingDisplayed}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-              <div className="text-center" style={{ marginTop: "40px" }}>
-                <Button bsStyle="default mr-3" style={{ padding: "10px 20px" }} onClick={() => this.flipCard()}>
-                  Flip
-                </Button>
-                <Button bsStyle="danger mr-3" style={{ padding: "10px 30px" }} onClick={() => this.rateCard()}>
-                  :(
-                </Button>
-                <Button bsStyle="primary mr-3" style={{ padding: "10px 30px" }} onClick={() => this.rateCard()}>
-                  -.-
-                </Button>
-                <Button bsStyle="success mr-3" style={{ padding: "10px 30px" }} onClick={() => this.rateCard()}>
-                  :)
-                </Button>
-              </div>
-            </div>
+        <div className="row">
+          <div className="col-md-6 col-md-offset-3">
+            <Panel>
+              <Panel.Body style={{ minHeight: 150, fontSize: '20px' }}>
+                { textBeingDisplayed }
+              </Panel.Body>
+              <Panel.Footer>
+                <div className="text-center">
+                  <div className="btn-group">
+                    <Button bsStyle="white" onClick={() => this.flipCard()}>
+                      <span className="fa fa-refresh"></span>&nbsp;Flip
+                    </Button>
+                    <Button bsStyle="white" onClick={() => this.rateCard()}>
+                      <span className="fa fa-frown-o text-danger"
+                            style={{ fontSize: '1.25em' }}></span>
+                    </Button>
+                    <Button bsStyle="white" onClick={() => this.rateCard()}>
+                      <span className="fa fa-meh-o text-info"
+                            style={{ fontSize: '1.25em' }}></span>
+                    </Button>
+                    <Button bsStyle="white" onClick={() => this.rateCard()}>
+                      <span className="fa fa-smile-o text-success"
+                            style={{ fontSize: '1.25em' }}></span>
+                    </Button>
+                  </div>
+                </div>
+              </Panel.Footer>
+            </Panel>
           </div>
-        </div>;
+        </div>
+      </div>;
     } else if(isFinished) {
       return (
         <div className="gn-quiz-page">
@@ -92,6 +97,9 @@ export class _Quiz extends React.Component {
 
   rateCard() {
     this.props.rateFlashcardReview();
+    this.setState({
+      currentFlashcardVisibleSide: 'front'
+    });
   }
 
 }

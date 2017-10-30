@@ -13,7 +13,7 @@
 import Home from "./components/page/Home.jsx";
 import Quiz from "./components/page/Quiz.jsx";
 import Collection from "./components/page/Collection.jsx";
-import Deck from "./components/page/Deck.jsx";
+import DeckDetail from "./components/page/DeckDetail.jsx";
 import Community from "./components/page/Community.jsx";
 
 import { store } from "./store/index.js";
@@ -24,15 +24,42 @@ import { getDeckDetailAttempt, } from "./store/actions/deck-detail.js";
 
 import { action } from "./store/actions/api.js";
 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 const routes = [
   {
     name: "Home",
+    title: "Genieus",
     path: "", // matches /
     body: () => Home
   },
   {
+    name: "QuizOfDeck",
+    path: "quiz/:deckId",
+    title: "Quiz",
+    body: () => Quiz,
+    load: (params, modifiers) => {
+      const id = params.deckId;
+
+      return store.dispatch(action('attemptRetrieveQuizOfDeckFlashcards')({
+        pathSubstitutions: {
+          id,
+        }
+      }));
+    }
+  },
+  {
     name: "Quiz",
     path: "quiz",
+    title: "Quiz",
     body: () => Quiz,
     load: (params, modifiers) => {
       return store.dispatch(action('attemptRetrieveQuizFlashcards')({
@@ -45,6 +72,7 @@ const routes = [
   {
     name: "Collection",
     path: "collection",
+    title: "Collection",
     body: () => Collection,
     load: (params, modifiers) => {
       console.log(action);
@@ -52,9 +80,10 @@ const routes = [
     }
   },
   {
-    name: "Deck",
+    name: "DeckDetail",
     path: "deck/:deckId",
-    body: () => Deck,
+    title: "Deck Detail",
+    body: () => DeckDetail,
     load: (params, modifiers) => {
       return store.dispatch(action('attemptRetrieveDeck')({
         pathSubstitutions: {
@@ -69,9 +98,17 @@ const routes = [
   {
     name: "Community",
     path: "community",
+    title: "Community",
     body: () => Community,
     load: (params, modifiers) => {
-      return store.dispatch(action('attemptListDecks')({}));
+      const q = getParameterByName('q');
+      console.log('q: ' + q);
+
+      return store.dispatch(action('attemptSearchPublicDecks')({
+        query: {
+          q
+        }
+      }));
     }
   }
 ];

@@ -8,8 +8,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <div className="container">
-        <div className="row justify-content-center">
-          <h1 style={ headerStyle }>Welcome to genieus!</h1>
+        <div className="">
         </div>
       </div>
     );
