@@ -8,6 +8,7 @@
  * temporary while an endpoint for this is created.
  */
 
+
 import _ from 'lodash';
 import React from 'react';
 
@@ -50,6 +51,7 @@ const CommunityDeck = connect(
     }
   }))(_CommunityDeck);
 
+
 export class _Community extends React.Component {
   constructor(props) {
     super(props);
@@ -59,6 +61,7 @@ export class _Community extends React.Component {
     const { decks } = this.props;
 
     return (
+
       <div className="row">
         <div className="col-md-12">
           <form onSubmit={ this.handleSearchFormSubmit.bind(this) }>
