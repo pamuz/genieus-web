@@ -39,6 +39,12 @@ class _ModalLogIn extends React.Component {
                          placeholder: "@itesm.mx"
                        },
                        {
+                         name: "username",
+                         label: "Username",
+                         type: "text",
+                         help: "Your username will be shown in the community",
+                       },
+                       {
                          name: "password",
                          label: "Password",
                          type: "password"

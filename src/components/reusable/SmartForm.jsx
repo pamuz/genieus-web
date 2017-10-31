@@ -23,6 +23,14 @@ export default class SmartForm extends React.Component {
                          ref={ input => this[item.name + 'Input'] = input } />
           );
           break;
+
+        case 'textarea':
+          element = (
+            <Form.TextArea key={ item.name }
+                           cols={ item.cols }
+                           rows={ item.rows } />
+          );
+          break;
           
         default:
           // The default is a normal text input

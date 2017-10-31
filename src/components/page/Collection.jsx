@@ -123,7 +123,14 @@ export class _Collection extends React.Component {
                              { value: "black", label: "Black" },
                            ],
                            label: "Color"
-                         }]} />
+                         },
+                         {
+                           name: "description",
+                           type: "textarea",
+                           label: "Description",
+                           rows: 5
+                         }
+                       ]} />
           </Modal.Body>
           <Modal.Footer>
             <div className="btn-group">

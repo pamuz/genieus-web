@@ -110,6 +110,22 @@ const routes = [
         }
       }));
     }
+  },
+  {
+    name: "Author",
+    path: "author",
+    title: "Author",
+    body: () => Community,
+    load: (params, modifiers) => {
+      const q = getParameterByName('q');
+      console.log('q: ' + q);
+
+      return store.dispatch(action('attemptSearchPublicDecks')({
+        query: {
+          q
+        }
+      }));
+    }
   }
 ];
 

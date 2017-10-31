@@ -14,6 +14,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
+import { Link } from '@curi/react';
 import Deck from '../reusable/Deck2.jsx';
 import Button from '../reusable/Button.jsx';
 import Panel from '../reusable/Panel.jsx';
@@ -25,6 +26,24 @@ const API_ACTIONS = [
 
 
 class _CommunityDeck extends Deck {
+  renderDeckBody() {
+    const { data } = this.props;
+
+    return (
+      <Panel.Body style={{ }}>
+        <p>
+          { data.attributes.description }
+        </p>
+        <p>
+          By&nbsp;
+          <Link to="Author" params={{ authorId: data.attributes.author_id }}>
+            { data.attributes.author_username }
+          </Link>
+        </p>
+      </Panel.Body>
+    );
+  }
+
   renderDeckFooter() {
     const { data } = this.props;
 

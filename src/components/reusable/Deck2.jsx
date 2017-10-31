@@ -38,13 +38,7 @@ export default class Deck2 extends React.Component {
 
     return (
       <Panel.Body style={{ }}>
-        { this.props.body || `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut leo
-        semper, tempor quam et, facilisis tortor. Duis quis ipsum lorem. Sed
-        tempor vehicula dolor, et scelerisque urna rhoncus eu. Sed ac orci
-        eget nisl ullamcorper porttitor. Nam lacinia dui non pellentesque
-        convallis. Integer feugiat, neque sit amet maximus tincidunt, est dui
-        elementum mauris, sit amet venenatis eros sem ac eros. Vestibulum id
-        convallis elit.` }
+        { data.attributes.description }
       </Panel.Body>
     );
   }

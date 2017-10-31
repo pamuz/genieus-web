@@ -70,6 +70,30 @@ FormSelect.propTypes = {
 };
 
 
+class FormTextArea extends React.Component {
+  render() {
+    const { cols, rows, label } = this.props;
+
+    return (
+      <div class="form-group">
+        { label ? <label>{ label }</label> : null }
+        <textarea className="form-control"
+                  ref={ (input) => this.input = input }
+                  cols={ cols } rows={ rows }></textarea>
+      </div>
+    );
+  }
+
+  val(newVal) {
+    if (newVal !== undefined) {
+      $(this.input).val(newVal);
+    } else {
+      return $(this.input).val();
+    }
+  }
+}
+
+
 export default class Form extends React.Component {
   render() {
     return (
@@ -80,3 +104,4 @@ export default class Form extends React.Component {
 
 Form.Input = FormInput;
 Form.Select = FormSelect;
+Form.TextArea = FormTextArea;
