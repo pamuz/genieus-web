@@ -39,6 +39,11 @@ class _ModalLogIn extends React.Component {
                          placeholder: "@itesm.mx"
                        },
                        {
+                         name: "username",
+                         label: "Username",
+                         type: "text",
+                       },
+                       {
                          name: "password",
                          label: "Password",
                          type: "password"
@@ -61,7 +66,8 @@ class _ModalLogIn extends React.Component {
   handleRegisterBtnClick(e) {
     const options = {};
 
-    const attributes = _.pick(this.registerForm.getValues(), ['email', 'password']);
+    const attributes = _.pick(this.registerForm.getValues(),
+                              ['email', 'username', 'password']);
 
     options.payload = {
       'data': {

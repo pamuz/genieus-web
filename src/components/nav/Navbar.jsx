@@ -106,6 +106,10 @@ export class _Navbar extends React.Component {
       loginModalShown
     } = this.state;
 
+    const {
+      session
+    } = this.props;
+
     return (
       <aside className="bg-primary aside-sm" id="nav">
         <section className="vbox">
@@ -130,7 +134,8 @@ export class _Navbar extends React.Component {
           <div className="nav-avatar pos-rlt">
             <a href="#" className="thumb-sm avatar animated rollIn" data-toggle="dropdown">
               <img src="images/avatar.jpg" alt="" className=""/>
-              <span className="caret caret-white"></span>
+              <span className="caret caret-white"></span>&nbsp;
+      { session.data.account.username }
             </a>
             <ul className="dropdown-menu m-t-sm animated fadeInLeft">
               <span className="arrow top"></span>
@@ -161,7 +166,7 @@ export class _Navbar extends React.Component {
           </div>
           <div className="nav-msg">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-              <b className="badge badge-white count-n">2</b>
+              {/* <b className="badge badge-white count-n">2</b> */}
             </a>
             <section className="dropdown-menu m-l-sm pull-left animated fadeInRight">
               <div className="arrow left"></div>
