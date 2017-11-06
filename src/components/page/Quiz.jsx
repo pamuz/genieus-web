@@ -46,7 +46,9 @@ export class _Quiz extends React.Component {
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
             <Panel>
-              <Panel.Body style={{ minHeight: 150, fontSize: '20px' }}>
+              <Panel.Body id="flashcard-body"
+                          ref={ elem => this.panelBody = elem }
+                          style={{ minHeight: 150, fontSize: '20px' }}>
                 { textBeingDisplayed }
               </Panel.Body>
               <Panel.Footer>
@@ -85,6 +87,30 @@ export class _Quiz extends React.Component {
     }
 
     return null;
+  }
+
+  componentDidUpdate() {
+    const {
+      flashcards,
+      currentFlashcardIndex,
+      isFinished
+    } = this.props;
+
+    const {
+      currentFlashcardVisibleSide
+    } = this.state;
+
+    if (flashcards.length && !isFinished) {
+      const flashcardBeingDisplayed = flashcards[currentFlashcardIndex];
+      const textBeingDisplayed = (
+        flashcardBeingDisplayed.attributes[currentFlashcardVisibleSide].text);
+
+      if (flashcardBeingDisplayed.attributes.type === 'math') {
+        katex.render($('#flashcard-body').text(), document.getElementById('flashcard-body'), {
+          displayMode: true
+        });
+      }
+    }
   }
 
   flipCard() {
