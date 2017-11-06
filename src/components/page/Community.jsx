@@ -19,6 +19,8 @@ import Button from '../reusable/Button.jsx';
 import Panel from '../reusable/Panel.jsx';
 import { action } from '../../store/actions/api.js';
 
+import { Link } from '@curi/react';
+
 const API_ACTIONS = [
   'searchPublicDecks',
 ];
@@ -27,6 +29,7 @@ const API_ACTIONS = [
 class _CommunityDeck extends Deck {
   renderDeckFooter() {
     const { data } = this.props;
+    console.log(data);
 
     return (
       <Panel.Footer>
@@ -38,6 +41,12 @@ class _CommunityDeck extends Deck {
         style={{
           color: data.attributes.color
         }}>Add to collection</Button>
+
+      <Link
+        className="btn btn-white btn-xs"
+        to="Author"
+        params={{ authorId: data.attributes.author }}
+        >More by { data.attributes.author_username }</Link>
       </Panel.Footer>
     );
   }

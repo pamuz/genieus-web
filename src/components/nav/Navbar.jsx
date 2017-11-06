@@ -8,6 +8,7 @@
  * haven't.
  */
 
+import _ from 'lodash';
 import React from 'react';
 import DOM from 'react-dom-factories';
 
@@ -135,7 +136,7 @@ export class _Navbar extends React.Component {
             <a href="#" className="thumb-sm avatar animated rollIn" data-toggle="dropdown">
               <img src="images/avatar.jpg" alt="" className=""/>
               <span className="caret caret-white"></span>&nbsp;
-      { session.data.account.username }
+      { _.get(session, 'data.account.username', '') }
             </a>
             <ul className="dropdown-menu m-t-sm animated fadeInLeft">
               <span className="arrow top"></span>

@@ -110,6 +110,23 @@ const routes = [
         }
       }));
     }
+  },
+  {
+    name: "Author",
+    path: "author/:authorId",
+    title: "Decks by author",
+    body: () => Community,
+    load: (params, modifiers) => {
+      const authorId = params.authorId;
+
+      console.log(authorId);
+
+      return store.dispatch(action('attemptGetPublicDecksOfAuthor')({
+        pathSubstitutions: {
+          authorId
+        }
+      }));
+    }
   }
 ];
 
