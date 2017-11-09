@@ -35,6 +35,7 @@ export default function account(state=INITIAL_STATE.quiz, action) {
       });
       break;
 
+    case 'DONE_RECORD_FLASHCARD_REVIEW':
     case 'RATE_FLASHCARD_REVIEW':
       let nextIndex = state.currentFlashcardIndex;
       let nextIsFinished = true;

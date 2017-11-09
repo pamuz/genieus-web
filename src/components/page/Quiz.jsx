@@ -5,6 +5,8 @@
 
 import React from 'react';
 
+import { action } from '../../store/actions/api.js';
+
 import { connect } from 'react-redux';
 
 import Panel from '../reusable/Panel.jsx';
@@ -57,15 +59,15 @@ export class _Quiz extends React.Component {
                     <Button bsStyle="white" onClick={() => this.flipCard()}>
                       <span className="fa fa-refresh"></span>&nbsp;Flip
                     </Button>
-                    <Button bsStyle="white" onClick={() => this.rateCard()}>
+                    <Button bsStyle="white" onClick={() => this.rateCard(0)}>
                       <span className="fa fa-frown-o text-danger"
                             style={{ fontSize: '1.25em' }}></span>
                     </Button>
-                    <Button bsStyle="white" onClick={() => this.rateCard()}>
+                    <Button bsStyle="white" onClick={() => this.rateCard(1)}>
                       <span className="fa fa-meh-o text-info"
                             style={{ fontSize: '1.25em' }}></span>
                     </Button>
-                    <Button bsStyle="white" onClick={() => this.rateCard()}>
+                    <Button bsStyle="white" onClick={() => this.rateCard(2)}>
                       <span className="fa fa-smile-o text-success"
                             style={{ fontSize: '1.25em' }}></span>
                     </Button>
@@ -121,8 +123,16 @@ export class _Quiz extends React.Component {
     });
   }
 
-  rateCard() {
-    this.props.rateFlashcardReview();
+  rateCard(score) {
+    const {
+      flashcards,
+      currentFlashcardIndex,
+    } = this.props;
+
+    const currentFlashcard = flashcards[currentFlashcardIndex];
+
+    this.props.rateFlashcardReview(currentFlashcard.id, score);
+
     this.setState({
       currentFlashcardVisibleSide: 'front'
     });
@@ -136,10 +146,16 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    rateFlashcardReview: () => {
-      dispatch({
-        type: 'RATE_FLASHCARD_REVIEW'
-      });
+    rateFlashcardReview: (flashcard_id, score) => {
+      dispatch(action('attemptRecordFlashcardReview')({
+        pathSubstitutions: {
+          id: flashcard_id
+        },
+        payload: {
+          flashcard_id,
+          score
+        }
+      }));
     }
   }
 };
