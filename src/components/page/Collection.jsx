@@ -40,6 +40,7 @@ export class _Collection extends React.Component {
     // Closure for inner class
     const attemptDeleteDeck = this.attemptDeleteDeck.bind(this);
     const attemptMarkDeckAsPublic = this.attemptMarkDeckAsPublic.bind(this);
+    const attemptMarkDeckAsPrivate = this.attemptMarkDeckAsPrivate.bind(this);
 
     this.DeckComponent = createReactClass({
       getDefaultProps() {
@@ -61,10 +62,17 @@ export class _Collection extends React.Component {
                   params={{ deckId: data.id }}>
               <span className="fa fa-trophy"></span>&nbsp;Take quiz
             </Link>
+            { data.attributes.is_public === 0 ?
             <Button className="btn btn-white btn-xs"
                     onClick={ () => attemptMarkDeckAsPublic(data) }>
               <span className="fa fa-users"></span>&nbsp;Make public
             </Button>
+            :
+            <Button className="btn btn-white btn-xs"
+                    onClick={ () => attemptMarkDeckAsPrivate(data) }>
+              <span className="fa fa-users"></span>&nbsp;Make private
+            </Button>
+            }
             <Button className="btn btn-danger btn-xs"
                     onClick={ () => attemptDeleteDeck(data.id) }>
               <span className="fa fa-trash-o"></span>&nbsp;Delete
@@ -200,6 +208,21 @@ export class _Collection extends React.Component {
       }
     });
   }
+
+  attemptMarkDeckAsPrivate(deck) {
+    this.props.attemptPatchDeck({
+      pathSubstitutions: {
+        id: deck.id,
+      },
+      payload: {
+        data: {
+          type: "deck",
+          attributes: Object.assign({}, deck.attributes, { is_public: 0 })
+        }
+      }
+    });
+  }
+
 }
 
 /* Styles */

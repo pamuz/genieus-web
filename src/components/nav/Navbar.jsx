@@ -86,15 +86,16 @@ export class _Navbar extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.isLoggingIn !== nextProps.isLoggingIn &&
-        nextProps.isLoggingIn === false) {
+    console.log(nextProps);
+    if (this.props.session.isLoggingIn !== nextProps.session.isLoggingIn &&
+        nextProps.session.isLoggingIn === false) {
       this.setState({
         loginModalShown: false
       });
     }
 
-    if (this.props.isRegistering !== nextProps.isRegistering &&
-        nextProps.isRegistering === false) {
+    if (this.props.session.isRegistering !== nextProps.session.isRegistering &&
+        nextProps.session.isRegistering === false) {
       this.setState({
         registerModalShown: false
       });

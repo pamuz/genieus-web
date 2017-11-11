@@ -7,6 +7,7 @@
  * routes.jsx file. The <Navigator> component is told to render whatever
  * component class the current route has in it's `body` property.
  */
+import _ from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -45,6 +46,7 @@ init(function() {
               );
             }
 
+            console.log(config);
             const { location, params } = response;
             return response.body ?
                    (
@@ -56,7 +58,7 @@ init(function() {
                              <p>{ response.title }</p>
                            </header>
                            <section className="scrollable wrapper">
-                             <response.body params={params} history={config.history} location={location} />
+                             <response.body history={ config.history } params={params} location={location} />
                            </section>
                          </section>
                          <a href="#" className="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
