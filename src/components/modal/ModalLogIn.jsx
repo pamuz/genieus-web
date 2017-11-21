@@ -7,6 +7,7 @@ import Button from '../reusable/Button.jsx';
 import SmartForm from '../reusable/SmartForm.jsx';
 import { FormInput } from '../reusable/Form.jsx';
 import { action } from '../../store/actions/api.js';
+import { Link } from '@curi/react';
 
 const STATE_TO_PROPS_KEYS = [ 'isAuthenticating', 'isLoggedIn', 'error',
                               'attemptCreateSession', 'isInLoginingError',
@@ -43,6 +44,7 @@ class _ModalLogIn extends React.Component {
                          label: "Password",
                          type: "password"
                        }]} />
+          <Link to="PasswordReset">Forgot password?</Link>
         </Modal.Body>
         <Modal.Footer>
           <Button bsStyle="primary" onClick={this.handleLoginBtnClick.bind(this)}>

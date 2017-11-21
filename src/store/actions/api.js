@@ -77,7 +77,11 @@ function parseSwagger(swaggerData, callback) {
        *   pathSubstitutions: An object of values to substitue in the path
        *   query: An object to be converted into the query string
        */
-      const actionAttempt = function(options) {
+      const actionAttempt = function(options, onComplete) {
+        if (onComplete === undefined) {
+          onComplete = function() {}
+        }
+
         return (dispatch) => {
           dispatch(actionStart(options));
 
@@ -120,8 +124,10 @@ function parseSwagger(swaggerData, callback) {
           $.ajax(ajaxObject)
            .done((response, status, xhr) => {
              dispatch(actionDone(response));
+             onComplete(undefined, response);
            }).fail((xhr, status, error) => {
              dispatch(actionFail(xhr));
+             onComplete(error, undefined);
            });
         }
       };

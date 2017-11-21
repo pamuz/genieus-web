@@ -66,8 +66,15 @@ class _ModalLogIn extends React.Component {
   handleRegisterBtnClick(e) {
     const options = {};
 
+    const formValues = this.registerForm.getValues();
+
     const attributes = _.pick(this.registerForm.getValues(),
                               ['email', 'username', 'password']);
+
+    if (formValues.email.indexOf('@itesm') == -1) {
+      alert('Genieus is curently only accepting registration from @itesm accounts');
+      return;
+    }
 
     options.payload = {
       'data': {

@@ -15,6 +15,9 @@ import Quiz from "./components/page/Quiz.jsx";
 import Collection from "./components/page/Collection.jsx";
 import DeckDetail from "./components/page/DeckDetail.jsx";
 import Community from "./components/page/Community.jsx";
+import PasswordReset from "./components/page/PasswordReset.jsx";
+import PasswordChange from "./components/page/PasswordChange.jsx";
+import AccountActivation from "./components/page/AccountActivation.jsx";
 
 import { store } from "./store/index.js";
 
@@ -127,6 +130,24 @@ const routes = [
         }
       }));
     }
+  },
+  {
+    name: "PasswordChange",
+    path: "password-change/:token",
+    title: "Password Change",
+    body: () => PasswordChange
+  },
+  {
+    name: "PasswordReset",
+    path: "password-reset",
+    title: "Password Reset",
+    body: () => PasswordReset
+  },
+  {
+    name: "AccountActivation",
+    path: "activate/:id",
+    title: "Account activation",
+    body: () => AccountActivation,
   }
 ];
 
