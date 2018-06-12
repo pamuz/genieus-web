@@ -1,24 +1,22 @@
-import { combineReducers } from 'redux';
 import { INITIAL_STATE } from '../constants.js';
-import {
-  LOGIN_INITIATED,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
-  LOGOUT
-} from '../actions/account.js';
+import { actionType } from '../actions/account.js';
 
-function account(state=INITIAL_STATE.account, action) {
+export default function account(state=INITIAL_STATE.session, action) {
   switch(action.type) {
-    case LOGIN_INITIATED:
+    case actionType('startCreateSession'):
       return Object.assign({}, state, {
+        isLoggingIn: true,
         isAuthenticating: true,
       });
       break;
-    case LOGIN_SUCCESS:
+
+    case actionType('doneCreateSession'):
       return Object.assign({}, state, {
         isAuthenticating: false,
         isInError: false,
         isLoggedIn: true,
+        isLoggingIn: false,
+        isRegistering: false,
         data: {
           email: action.email,
           name: action.name,
@@ -26,7 +24,8 @@ function account(state=INITIAL_STATE.account, action) {
         },
       });
       break;
-    case LOGIN_FAILURE:
+
+    case actionType('failCreateSession'):
       return Object.assign({}, state, {
         isAuthenticating: false,
         isInError: true,
@@ -34,21 +33,25 @@ function account(state=INITIAL_STATE.account, action) {
         data: {},
       });
       break;
-    case LOGOUT:
+
+    case actionType('startCreateAccount'):
       return Object.assign({}, state, {
-        isAuthenticating: false,
-        isInError: false,
-        isLoggedIn: false,
-        data: {},
+        isRegistering: true,
       });
       break;
+
+    case actionType('doneCreateAccount'):
+      return Object.assign({}, state, {
+        isRegistering: false,
+      });
+
+    case actionType('failCreateAccount'):
+      return Object.assign({}, state, {
+        isRegistering: false,
+        isInRegistrationFailure: true
+      });
+
     default:
       return state;
   }
 }
-
-const rootReducer = combineReducers({
-  account,
-});
-
-export default rootReducer;
